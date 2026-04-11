@@ -468,10 +468,14 @@ video {
 
       <div class="fila-botones">
   <button id="btnRegistrarme" type="button" onclick="registrar()">Registrarme</button>
-  <button type="button" onclick="iniciarSesion()">Cargar mi panel</button>
+  <button id="btnCargarPanel" type="button" onclick="iniciarSesion()">Cargar mi panel</button>
 </div>
-    </div>
-  </div>
+
+<div class="dato" style="margin-top:10px;">
+  <a href="javascript:void(0)" onclick="solicitarRecuperacionPassword()" style="color:#93c5fd;">
+    Olvidé mi contraseña
+  </a>
+</div>
 
   <!-- MÓDULO 2 -->
 <div class="card oculto" id="modPago">
@@ -1160,6 +1164,39 @@ const correoFinal = validacionCorreo.correo;
   }
 }
 
+async function solicitarRecuperacionPassword() {
+  try {
+    const email = obtenerValor("email");
+
+    if (!email) {
+      alert("Escribe tu correo primero para enviarte el enlace de recuperación.");
+      return;
+    }
+
+    const redirectTo = "https://panel.misemilla.com/reset-password.html";
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo
+    });
+
+    if (error) {
+      alert("Error: " + error.message);
+      return;
+    }
+
+    const modRespuesta = document.getElementById("modRespuesta");
+    if (modRespuesta) modRespuesta.classList.remove("oculto");
+
+    mostrarRespuesta({
+      message: "Te enviamos un enlace para restablecer tu contraseña. Revisa tu correo."
+    });
+
+  } catch (err) {
+    console.error("❌ Error en solicitarRecuperacionPassword():", err);
+    alert("Error inesperado al solicitar recuperación");
+  }
+}
+
 /* ========================
    INICIAR SESIÓN / CARGAR MI PANEL
 ======================== */
@@ -1683,6 +1720,7 @@ window.solicitarOtpRetiro = solicitarOtpRetiro;
 window.confirmarOtpRetiro = confirmarOtpRetiro;
 window.cerrarSesion = cerrarSesion;
 window.copiarEnlaceRegistro = copiarEnlaceRegistro;
+window.solicitarRecuperacionPassword = solicitarRecuperacionPassword;
 </script>
 </body>
 </html>
