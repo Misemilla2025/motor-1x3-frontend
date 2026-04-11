@@ -720,10 +720,20 @@ function volverInicioDesdePago() {
   if (txidInput) txidInput.value = '';
 
   const modRespuesta = document.getElementById('modRespuesta');
-  if (modRespuesta) modRespuesta.classList.remove('oculto');
+  if (modRespuesta) modRespuesta.classList.add('oculto');
 
-  mostrarRespuesta({
-    message: 'Puedes continuar más tarde. Tu cuenta quedó registrada.'
+  const modRegistro =
+    document.getElementById('modRegistro') ||
+    document.getElementById('modInicio') ||
+    document.getElementById('modAcceso');
+
+  if (modRegistro) {
+    modRegistro.classList.remove('oculto');
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
   });
 }
 
