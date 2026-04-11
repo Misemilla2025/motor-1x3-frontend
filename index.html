@@ -312,35 +312,38 @@ video {
 .input-password-wrap input{
   width: 100%;
   box-sizing: border-box;
-  padding-right: 42px;
+  padding-right: 32px !important;
 }
 
-.btn-ver-password{
+.input-password-wrap .btn-ver-password{
+  all: unset;
   position: absolute !important;
-  top: 50%;
-  right: 10px;
+  top: 50% !important;
+  right: 8px !important;
   left: auto !important;
-  transform: translateY(-50%);
-  width: 26px !important;
-  min-width: 26px !important;
-  max-width: 26px !important;
-  height: 26px !important;
+  transform: translateY(-50%) !important;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  max-width: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
   background: transparent !important;
   box-shadow: none !important;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
-  opacity: 0.9;
-  z-index: 2;
+  cursor: pointer !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  z-index: 3 !important;
+  opacity: .9;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.btn-ver-password:hover{
+.input-password-wrap .btn-ver-password:hover{
   opacity: 1;
 }
 
