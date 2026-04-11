@@ -398,7 +398,7 @@ video {
 
   <div class="dato">
     <strong>Billetera destino:</strong>
-    <div id="walletDestino" class="wallet-box">0x08cc7d080473435c47cc2a89f5e10a1eecb81796</div>
+    <div id="walletDestino" class="wallet-box">0x9616a1356ae0294a7f0cd486ce7e718f20e09e4a</div>
   </div>
 
   <div class="dato" id="textoPago">
@@ -1032,26 +1032,67 @@ async function cargarPanel(mostrarMensajeExito = true) {
 }
 
 function pintarPanel(data) {
-  const fueraDelFlujo = data.automatico_activo === false || data.bloque_actual === 'DETENIDO' || data.nivel === 'DETENIDO';
+  const esActivo = data.estado === 'ACTIVO';
+  const esPendienteActivacion = data.estado === 'PENDIENTE_ACTIVACION';
+  const estaDetenido =
+    data.bloque_actual === 'DETENIDO' ||
+    data.nivel === 'DETENIDO';
+
+  const fueraDelFlujo =
+    esActivo &&
+    (
+      data.automatico_activo === false ||
+      estaDetenido
+    );
+
   setTexto('estadoTexto', data.estado || '-');
   setTexto('u_email', data.email || '-');
   setTexto('u_saldo', dinero(data.saldo_acumulado));
   setTexto('u_saldo_retiro', dinero(data.saldo_disponible_retiro));
   setTexto('u_ciclos_pequenos', String(Number(data.ciclos_pequenos || 0)));
-  setTexto('u_automatico', fueraDelFlujo ? 'Apagado' : 'Activo');
+
+  setTexto(
+    'u_automatico',
+    esActivo ? (fueraDelFlujo ? 'Apagado' : 'Activo') : 'Pendiente'
+  );
+
   setTexto('u_wallet', 'Se solicita al retirar');
   setTexto('u_red', data.wallet_red || 'BEP20');
   setTexto('u_retirado', dinero(data.total_retirado));
-  setTexto('u_bloque_actual', fueraDelFlujo ? 'Fuera del flujo' : (data.bloque_actual || data.nivel || 'A'));
+
+  setTexto(
+    'u_bloque_actual',
+    esPendienteActivacion
+      ? 'Pendiente de activación'
+      : (fueraDelFlujo ? 'Fuera del flujo' : (data.bloque_actual || data.nivel || 'A'))
+  );
+
   setTexto('retiroDisponible', dinero(data.saldo_disponible_retiro));
+
   const walletDestino = porId('walletDestino');
-  if (walletDestino) walletDestino.textContent = data.pago_inicial?.billetera_destino || '0x08cc7d080473435c47cc2a89f5e10a1eecb81796';
-  setTexto('estadoCuenta', data.estado === 'ACTIVO' ? '✅ Cuenta activa' : '⏳ Pendiente de activación');
-  setTexto('materialBasico', data.descarga_usada?.basico ? 'Entregado' : (data.material?.basico_habilitado ? 'Disponible para elegir' : 'No disponible'));
+  if (walletDestino) {
+    walletDestino.textContent =
+      data.pago_inicial?.billetera_destino ||
+      '0x9616a1356ae0294a7f0cd486ce7e718f20e09e4a';
+  }
+
+  setTexto(
+    'estadoCuenta',
+    esActivo ? '✅ Cuenta activa' : '⏳ Pendiente de activación'
+  );
+
+  setTexto(
+    'materialBasico',
+    data.descarga_usada?.basico
+      ? 'Entregado'
+      : (data.material?.basico_habilitado ? 'Disponible para elegir' : 'No disponible')
+  );
+
   configurarTextoPago(data);
 
   const materialBasicoId = data.material_basico_id || null;
   const bloqueMateriales = porId('bloque-materiales');
+
   if (bloqueMateriales) {
     if (data.descarga_usada?.basico && materialBasicoId) {
       bloqueMateriales.style.display = 'block';
@@ -1063,50 +1104,50 @@ function pintarPanel(data) {
   }
 
   const estaEnA = data.bloque_actual === 'A' || data.nivel === 'A';
-const estaEnB = data.bloque_actual === 'B' || data.nivel === 'B';
+  const estaEnB = data.bloque_actual === 'B' || data.nivel === 'B';
 
-const modCatalogoMaterial = document.getElementById('modCatalogoMaterial');
+  const modCatalogoMaterial = document.getElementById('modCatalogoMaterial');
 
-if (modCatalogoMaterial) {
-  const puedeElegir =
-    data.estado === 'ACTIVO' &&
+  if (modCatalogoMaterial) {
+    const puedeElegir =
+      esActivo &&
+      estaEnA &&
+      data.material?.basico_habilitado === true &&
+      data.descarga_usada?.basico !== true &&
+      !fueraDelFlujo;
+
+    if (estaEnB) {
+      ocultar('modMaterial');
+      ocultar('modCatalogoMaterial');
+    } else if (puedeElegir) {
+      mostrar('modMaterial');
+      mostrar('modCatalogoMaterial');
+      cargarCatalogoMaterial(data.email);
+    } else {
+      ocultar('modCatalogoMaterial');
+    }
+  }
+
+  const puedeSalirAhora =
+    esActivo &&
     estaEnA &&
-    data.material?.basico_habilitado === true &&
+    data.puede_apagar_automatico === true &&
     data.descarga_usada?.basico !== true &&
     !fueraDelFlujo;
 
-  if (estaEnB) {
-    ocultar('modMaterial');
-    ocultar('modCatalogoMaterial');
-  } else if (puedeElegir) {
-    mostrar('modMaterial');
-    mostrar('modCatalogoMaterial');
-    cargarCatalogoMaterial(data.email);
+  if (puedeSalirAhora) {
+    mostrar('bloqueDecision');
   } else {
-    ocultar('modCatalogoMaterial');
+    ocultar('bloqueDecision');
   }
-}
 
-const puedeSalirAhora =
-  data.estado === 'ACTIVO' &&
-  estaEnA &&
-  data.puede_apagar_automatico === true &&
-  data.descarga_usada?.basico !== true &&
-  !fueraDelFlujo;
+  if (Number(data.saldo_disponible_retiro || 0) >= 15) {
+    mostrar('bloqueRetiro');
+  } else {
+    ocultar('bloqueRetiro');
+  }
 
-if (puedeSalirAhora) {
-  mostrar('bloqueDecision');
-} else {
-  ocultar('bloqueDecision');
-}
-
-if (Number(data.saldo_disponible_retiro || 0) >= 15) {
-  mostrar('bloqueRetiro');
-} else {
-  ocultar('bloqueRetiro');
-}
-
-actualizarBarras(data);
+  actualizarBarras(data);
 }
 
 function actualizarBarras(data) {
