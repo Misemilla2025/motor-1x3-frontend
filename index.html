@@ -752,9 +752,34 @@ async function cargarCatalogoMaterial(email) {
   }
 }
 
-/* ========================
-   REGISTRAR
-======================== */
+async function diagnosticarRegistroExistente(email, password) {
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (!error && data?.session) {
+      await supabaseClient.auth.signOut();
+      return "confirmado";
+    }
+
+    const msg = String(error?.message || "").toLowerCase();
+
+    if (msg.includes("email not confirmed")) {
+      return "no_confirmado";
+    }
+
+    if (msg.includes("invalid login credentials")) {
+      return "ya_existe_otra_clave";
+    }
+
+    return "ya_existe";
+  } catch (_) {
+    return "ya_existe";
+  }
+}
+
 let enviandoRegistro = false;
 
 async function registrar() {
@@ -786,13 +811,81 @@ async function registrar() {
       return;
     }
 
+    const API_URL =
+      typeof API_BASE !== "undefined" ? API_BASE :
+      typeof API !== "undefined" ? API :
+      "";
+
     const { data, error } = await supabaseClient.auth.signUp({
       email,
       password
     });
 
     if (error) {
+      const msg = String(error.message || "").toLowerCase();
+
+      if (msg.includes("already registered")) {
+        const estado = await diagnosticarRegistroExistente(email, password);
+
+        const modRespuesta = document.getElementById("modRespuesta");
+        if (modRespuesta) modRespuesta.classList.remove("oculto");
+
+        if (estado === "confirmado") {
+          mostrarRespuesta({
+            error: "Este correo ya está registrado y ya fue confirmado. Usa el botón 'Cargar mi panel'."
+          });
+        } else if (estado === "no_confirmado") {
+          guardarEmailLocal(email);
+          mostrarRespuesta({
+            error: "Esta cuenta ya fue registrada. Revisa tu correo y confirma tu cuenta antes de continuar."
+          });
+        } else if (estado === "ya_existe_otra_clave") {
+          mostrarRespuesta({
+            error: "Este correo ya está registrado. Si no recuerdas la contraseña, usa la opción de recuperación."
+          });
+        } else {
+          mostrarRespuesta({
+            error: "Este correo ya está registrado. Usa 'Cargar mi panel'."
+          });
+        }
+
+        return;
+      }
+
       alert("Error: " + error.message);
+      return;
+    }
+
+    const esUsuarioExistente =
+      data?.user &&
+      Array.isArray(data.user.identities) &&
+      data.user.identities.length === 0;
+
+    if (esUsuarioExistente) {
+      const estado = await diagnosticarRegistroExistente(email, password);
+
+      const modRespuesta = document.getElementById("modRespuesta");
+      if (modRespuesta) modRespuesta.classList.remove("oculto");
+
+      if (estado === "confirmado") {
+        mostrarRespuesta({
+          error: "Este correo ya está registrado y ya fue confirmado. Usa el botón 'Cargar mi panel'."
+        });
+      } else if (estado === "no_confirmado") {
+        guardarEmailLocal(email);
+        mostrarRespuesta({
+          error: "Esta cuenta ya fue registrada. Revisa tu correo y confirma tu cuenta antes de continuar."
+        });
+      } else if (estado === "ya_existe_otra_clave") {
+        mostrarRespuesta({
+          error: "Este correo ya está registrado. Si no recuerdas la contraseña, usa la opción de recuperación."
+        });
+      } else {
+        mostrarRespuesta({
+          error: "Este correo ya está registrado. Usa 'Cargar mi panel'."
+        });
+      }
+
       return;
     }
 
@@ -801,7 +894,7 @@ async function registrar() {
       return;
     }
 
-    const resEstructura = await fetch(`${API}/crear-estructura`, {
+    const resEstructura = await fetch(`${API_URL}/crear-estructura`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -818,24 +911,41 @@ async function registrar() {
     } catch (_) {}
 
     if (!resEstructura.ok) {
-      alert(
-        dataEstructura.message ||
-        dataEstructura.error ||
-        rawEstructura ||
-        "Registro creado, pero falló la estructura"
-      );
+      const modRespuesta = document.getElementById("modRespuesta");
+      if (modRespuesta) modRespuesta.classList.remove("oculto");
+
+      mostrarRespuesta({
+        error:
+          dataEstructura.message ||
+          dataEstructura.error ||
+          rawEstructura ||
+          "Registro creado, pero falló la estructura"
+      });
       return;
     }
 
     guardarEmailLocal(email);
 
-    await cargarPanel(false);
+    const modPago = document.getElementById("modPago");
+    if (modPago) modPago.classList.add("oculto");
+
+    const modMaterial = document.getElementById("modMaterial");
+    if (modMaterial) modMaterial.classList.add("oculto");
+
+    const modCatalogoMaterial = document.getElementById("modCatalogoMaterial");
+    if (modCatalogoMaterial) modCatalogoMaterial.classList.add("oculto");
+
+    const bloqueRetiro = document.getElementById("bloqueRetiro");
+    if (bloqueRetiro) bloqueRetiro.classList.add("oculto");
+
+    const bloqueDecision = document.getElementById("bloqueDecision");
+    if (bloqueDecision) bloqueDecision.classList.add("oculto");
 
     const modRespuesta = document.getElementById("modRespuesta");
     if (modRespuesta) modRespuesta.classList.remove("oculto");
 
     mostrarRespuesta({
-      message: "Registro exitoso. Ahora realiza tu aporte para activar tu cuenta."
+      message: "Registro exitoso. Revisa tu correo y confirma tu cuenta antes de continuar."
     });
 
   } catch (err) {
