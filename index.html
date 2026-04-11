@@ -630,15 +630,74 @@ function obtenerNombreMaterial(id) {
 }
 
 function configurarTextoPago(data) {
-  const fueraDelFlujo = data?.automatico_activo === false || data?.bloque_actual === 'DETENIDO' || data?.nivel === 'DETENIDO';
-  setTexto('tituloPago', fueraDelFlujo ? '2. Reactivación de cuenta' : '2. Activación de cuenta');
-  setHTML('textoPago', fueraDelFlujo
-    ? 'Tu cuenta está fuera del flujo. Para volver a ingresar al sistema, realiza nuevamente tu aporte de <strong>15 USDT (BEP20)</strong> a esta billetera.'
-    : 'Para activar tu acceso a la comunidad, realiza tu aporte de <strong>15 USDT (BEP20)</strong> a esta billetera.');
-  setTexto('btnPago', fueraDelFlujo ? 'Confirmar reactivación' : 'Confirmar activación');
-  setHTML('avisoPago', fueraDelFlujo
-    ? 'Después de confirmarse el pago, volverás al sistema, se activará el modo automático y se habilitará un nuevo material para elegir.'
-    : 'Después de confirmarse el pago, tu cuenta ingresará al sistema y se habilitará un material para elegir.');
+  const esActivo = data.estado === 'ACTIVO';
+  const esPendienteActivacion = data.estado === 'PENDIENTE_ACTIVACION';
+
+  const esReactivacion =
+    esActivo &&
+    (
+      data.bloque_actual === 'DETENIDO' ||
+      data.nivel === 'DETENIDO' ||
+      data.automatico_activo === false
+    );
+
+  const modPago = porId('modPago');
+  const tituloPago = porId('tituloPago');
+  const textoPago = porId('textoPago');
+  const avisoPago = porId('avisoPago');
+  const btnPago = porId('btnPago');
+
+  if (esPendienteActivacion || !esActivo) {
+    if (modPago) modPago.classList.remove('oculto');
+
+    if (tituloPago) {
+      tituloPago.textContent = '2. Activación de cuenta';
+    }
+
+    if (textoPago) {
+      textoPago.innerHTML =
+        'Para activar tu acceso a la comunidad, realiza tu aporte de <strong>15 USDT (BEP20)</strong> a esta billetera.';
+    }
+
+    if (avisoPago) {
+      avisoPago.textContent =
+        'Después de confirmarse el pago, tu cuenta ingresará al sistema y se habilitará un nuevo material para elegir.';
+    }
+
+    if (btnPago) {
+      btnPago.textContent = 'Confirmar activación';
+    }
+
+    return;
+  }
+
+  if (esReactivacion) {
+    if (modPago) modPago.classList.remove('oculto');
+
+    if (tituloPago) {
+      tituloPago.textContent = '2. Reactivación de cuenta';
+    }
+
+    if (textoPago) {
+      textoPago.innerHTML =
+        'Tu cuenta está fuera del flujo. Para volver a ingresar al sistema, realiza nuevamente tu aporte de <strong>15 USDT (BEP20)</strong> a esta billetera.';
+    }
+
+    if (avisoPago) {
+      avisoPago.textContent =
+        'Después de confirmarse el pago, volverás al sistema, se activará el modo automático y se habilitará un nuevo material para elegir.';
+    }
+
+    if (btnPago) {
+      btnPago.textContent = 'Confirmar reactivación';
+    }
+
+    return;
+  }
+
+  if (modPago) {
+    modPago.classList.add('oculto');
+  }
 }
 
 function controlarVista(data) {
