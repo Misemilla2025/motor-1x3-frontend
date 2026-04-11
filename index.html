@@ -412,11 +412,20 @@ video {
   <label for="txid">Hash de la transacción</label>
   <input id="txid" type="text" placeholder="0x..." />
 
-   <div class="fila-botones">
-  <button id="btnPago" type="button" onclick="reportarPago()">
-    Confirmar activación
-  </button>
-</div>
+  <div class="fila-botones">
+    <button id="btnPago" type="button" onclick="reportarPago()">
+      Confirmar activación
+    </button>
+  </div>
+
+  <div class="fila-botones" style="margin-top:15px;">
+    <button type="button" onclick="volverInicioDesdePago()">
+      Volver
+    </button>
+    <button type="button" onclick="cerrarSesion()">
+      Cerrar sesión
+    </button>
+  </div>
 </div>
 
 <!-- RESPUESTA -->
@@ -698,6 +707,24 @@ function configurarTextoPago(data) {
   if (modPago) {
     modPago.classList.add('oculto');
   }
+}
+
+function volverInicioDesdePago() {
+  ocultar('modPago');
+  ocultar('modMaterial');
+  ocultar('modCatalogoMaterial');
+  ocultar('bloqueRetiro');
+  ocultar('bloqueDecision');
+
+  const txidInput = document.getElementById('txid');
+  if (txidInput) txidInput.value = '';
+
+  const modRespuesta = document.getElementById('modRespuesta');
+  if (modRespuesta) modRespuesta.classList.remove('oculto');
+
+  mostrarRespuesta({
+    message: 'Puedes continuar más tarde. Tu cuenta quedó registrada.'
+  });
 }
 
 function controlarVista(data) {
