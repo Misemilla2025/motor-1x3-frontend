@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Panel de Membresía</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  .contenedor {
+    width: 100%;
+  }
+}
+
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+.contenedor {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+
+    .card {
+      background: #1e293b;
+      padding: 16px;
+      margin-top: 16px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+
+    input {
+      background: #fff;
+      color: #111827;
+    }
+
+    button {
+      background: #e5e7eb;
+      color: #111827;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .fila-botones {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .dato {
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+
+    .titulo-seccion {
+      margin-bottom: 10px;
+      color: #93c5fd;
+    }
+
+    .chip {
+      display: inline-block;
+      background: #334155;
+      padding: 8px 12px;
+      border-radius: 999px;
+      margin: 4px 6px 0 0;
+      font-size: 14px;
+      word-break: break-all;
+    }
+
+    .estado-ok {
+      color: #4ade80;
+      font-weight: bold;
+    }
+
+    .estado-warn {
+      color: #facc15;
+      font-weight: bold;
+    }
+
+    .estado-off {
+      color: #94a3b8;
+      font-weight: bold;
+    }
+
+    .respuesta-box {
+      background: #0f172a;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .apagado {
+      color: #64748b;
+    }
+
+    .progreso-item {
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    @media (min-width: 700px) {
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .fila-botones {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    .oculto {
+  display: none;
+}
+
+.intro-misemilla {
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  color: #e2e8f0;
+}
+
+.intro-misemilla h1 {
+  text-align: center;
+  color: #22c55e;
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.frase-impacto {
+  font-size: 18px;
+  font-weight: bold;
+  color: #facc15;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.descripcion {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.resaltado {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+.bloque-beneficio,
+.bloque-bonos,
+.bloque-cierre {
+  margin-top: 15px;
+  padding: 12px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+.bloque-beneficio ul {
+  padding-left: 15px;
+}
+
+.bloque-beneficio li {
+  margin-bottom: 5px;
+}
+
+.enfasis {
+  margin-top: 10px;
+  color: #38bdf8;
+}
+
+.bonos {
+  display: flex;
+  justify-content: space-around;
+  font-size: 18px;
+  margin: 10px 0;
+  color: #22c55e;
+  font-weight: bold;
+}
+
+.llamado {
+  font-weight: bold;
+  color: #facc15;
+  text-align: center;
+}
+
+.cta {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 10px;
+  color: #22c55e;
+}
+
+.wallet-box {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  color: #ffffff;
+  font-weight: bold;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.lista-material {
+  margin: 10px 0 15px 20px;
+  padding: 0;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.lista-material li {
+  margin-bottom: 6px;
+  list-style: none;
+}
+
+.frase-azul {
+  color: #4fc3f7; /* Azulito como el de tu diseño */
+}
+
+.usdt-verde {
+  color: #2ecc71; /* Verde bonito como en la captura */
+}
+
+.video-presentacion {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+.bloque-video {
+  margin: 20px 0;
+}
+
+video {
+  width: 100%;
+  height: auto;
+}
+
+.barra {
+  width: 100%;
+  height: 10px;
+  background: #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.barra-interna {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  transition: width 0.5s ease;
+}
+
+  </style>
+</head>
+<body>
+
+<div class="contenedor">
+  <h1>Mi Panel de Membresía</h1>
+
+
+  <div class="card oculto" id="estadoUsuario">
+    <strong>Estado:</strong> <span id="estadoTexto">-</span>
+  </div>
+
+  <!-- MÓDULO 1 -->
+  <div class="card" id="modRegistro">
+    <h2 class="titulo-seccion">1. Registro</h2>
+
+    <div class="card">
+
+<div class="bloque-beneficio">
+  <h3>🌱 Bienvenido a Mi Semilla</h3>
+
+  <p>
+    ¿Te imaginas un lugar donde tu crecimiento personal impulse directamente tu prosperidad? 
+    Bienvenidos a <strong>Mi Semilla</strong>, la comunidad donde el conocimiento se transforma en prosperidad colectiva.
+  </p>
+
+  <p>
+    Al integrarte a nuestra comunidad con un aporte de ingreso de <strong>15 USDT</strong>, recibes acceso a la biblioteca digital con contenidos de alto valor:
+  </p>
+
+  <ul class="lista-material">
+    <li>📚 Desarrollo personal</li>
+    <li>💡 Mentalidad de crecimiento</li>
+    <li>🚀 Emprendimiento práctico</li>
+  </ul>
+
+  <p class="frase-azul">
+    información estratégica diseñada para potenciar tu mentalidad, mejorar tu vida cotidiana y abrirte las puertas al emprendimiento. 
+    Además de adquirir conocimiento, inviertes en tu mejor activo: <strong>tú mismo</strong>.
+  </p>
+
+  <p>
+    Quiero contarte que, en <strong>Mi Semilla</strong>, el aprendizaje es solo el inicio. 
+    Gracias a nuestro sistema de ayuda mutua, participas en un esquema de regalos de 
+    <strong class="usdt-verde">$15</strong> y <strong class="usdt-verde">$30</strong> que se reflejan en tu panel a medida que avanzas dentro del sistema de recompensas.
+  </p>
+
+  <p>
+    Para mantener este motor de prosperidad activo y sostenible para todos, al completar una vuelta simplemente realizas un nuevo aporte para acceder a más contenido. Así renovamos el flujo de beneficios, asegurando que tú y toda la comunidad se sigan beneficiando de manera constante.
+  </p>
+
+  <p class="llamado">
+    🚀 El éxito en comunidad es más sólido y rápido.
+  </p>
+
+  <p class="cta">
+    Únete hoy y comienza a recibir los beneficios de una comunidad que crece contigo. 
+    Haz clic en el enlace ahora mismo, únete, comparte esta oportunidad con tu círculo cercano y haz que el conocimiento circule. 
+    Asegura tu lugar en el próximo ciclo y hagamos que tu semilla dé frutos hoy mismo.  
+    <strong>¡Te esperamos dentro! 🌟</strong>
+  </p>
+</div>
+
+<div class="bloque-video">
+  <h3>🎬 Conoce Mi Semilla</h3>
+  <video controls preload="metadata" playsinline class="video-presentacion">
+    <source src="video-presentacion.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de video.
+  </video>
+</div>
+
+<div class="bloque-video">
+  <h3>🖥️ Cómo usar tu Panel</h3>
+  <video controls preload="metadata" playsinline class="video-presentacion">
+    <source src="video-panel.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de video.
+  </video>
+</div>
+ <label for="email">Correo</label>
+      <input 
+  type="email" 
+  id="email" 
+  oninput="this.value = this.value.toLowerCase()" 
+>
+
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" placeholder="******" />
+
+      <div class="fila-botones">
+  <button id="btnRegistrarme" type="button" onclick="registrar()">Registrarme</button>
+  <button type="button" onclick="iniciarSesion()">Cargar mi panel</button>
+</div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 2 -->
+<div class="card oculto" id="modPago">
+  <h2 class="titulo-seccion" id="tituloPago">2. Activación de cuenta</h2>
+
+  <div class="dato">
+    <strong>Billetera destino:</strong>
+    <div id="walletDestino" class="wallet-box">0x08cc7d080473435c47cc2a89f5e10a1eecb81796</div>
+  </div>
+
+  <div class="dato" id="textoPago">
+    Para activar tu acceso a la comunidad, realiza tu aporte de <strong>15 USDT (BEP20)</strong> a esta billetera.
+  </div>
+
+  <div class="dato apagado" id="avisoPago">
+    Después de confirmarse el pago, tu cuenta ingresará nuevamente al sistema y se habilitará un nuevo material para elegir.
+  </div>
+
+  <label for="txid">Hash de la transacción</label>
+  <input id="txid" type="text" placeholder="0x..." />
+
+   <div class="fila-botones">
+  <button id="btnPago" type="button" onclick="reportarPago()">
+    Confirmar activación
+  </button>
+</div>
+</div>
+
+<!-- RESPUESTA -->
+<div class="card oculto" id="modRespuesta">
+  <h2 class="titulo-seccion">Respuesta del sistema</h2>
+  <div id="respuesta" class="respuesta-box">Esperando acción...</div>
+</div>
+
+  <!-- MÓDULO 3 -->
+<div class="card oculto" id="modMaterial">
+ <h3 class="titulo-seccion">3. Biblioteca digital</h3>
+<div class="dato"><strong>Estado de cuenta:</strong> <span id="estadoCuenta">⏳ Pendiente de activación</span></div>
+<div class="dato"><strong>Biblioteca digital:</strong> <span id="materialBasico">No disponible</span></div>
+
+<div id="bloque-materiales" style="
+  display:none;
+  margin-top:15px;
+  padding:10px;
+  border-radius:10px;
+  background:#1e293b;
+"></div>
+
+<div class="card oculto" id="modCatalogoMaterial">
+  <h2 class="titulo-seccion">Elegir material</h2>
+
+  <div id="catalogoMaterialBox">
+    <span class="apagado">Aún no hay materiales para mostrar</span>
+  </div>
+</div>
+
+<!-- MÓDULO 4 -->
+<div class="card oculto" id="modAvance">
+  <h2 class="titulo-seccion">4. Mi avance</h2>
+
+  <div class="grid-2">
+    <div>
+      <div class="dato"><strong>Correo:</strong> <span id="u_email">-</span></div>
+      <div class="dato"><strong>Regalos acumulado de la fase:</strong> $<span id="u_saldo">0</span></div>
+      <div class="dato"><strong>Regalos disponible :</strong> $<span id="u_saldo_retiro">0</span></div>
+      <div class="dato"><strong>Fases completadas:</strong> <span id="u_ciclos_pequenos">0</span></div>
+      <div class="dato"><strong>Modo automático:</strong> <span id="u_automatico">Activo</span></div>
+    </div>
+
+    <div>
+      <div class="dato"><strong>Billetera de retiro:</strong> <span id="u_wallet">Se solicita al retirar</span></div>
+      <div class="dato"><strong>Red permitida:</strong> <span id="u_red">BEP20</span></div>
+      <div class="dato"><strong>Total recibido:</strong> $<span id="u_retirado">0</span></div>
+      <div class="dato"><strong>Ubicación actual:</strong> <span id="u_bloque_actual">A</span></div>
+    </div>
+  </div>
+
+  <div id="bloqueBarras">
+  <div class="dato apagado" style="margin-top: 14px; margin-bottom: 16px;">
+    Cuando completes tus regalos <strong>$30</strong>, si sigues en modo automático,
+    el sistema toma de tu acumulado <strong>$15</strong> para otra vuelta y deja <strong>$15 disponibles para retiro</strong>.
+
+    <br><br>
+
+    Si decides salir, dejarás de participar en el flujo y conservarás tu cuenta.
+    Para volver a ingresar nuevamente, deberás adquirir un nuevo material de <strong>$15</strong>.
+  </div>
+
+  <div class="progreso-item">
+    <strong>Barra 1: Cuando esta barra se complete, recibirás un regalo de $15</strong>
+    <div class="barra">
+      <div class="barra-interna" id="barraA"></div>
+    </div>
+    <span id="estadoA" class="estado-warn">⏳ Avanzando</span>
+  </div>
+
+  <div class="progreso-item">
+    <strong>Barra 2: Cuando esta barra se complete, recibirás otro regalo de $15</strong>
+    <div class="barra">
+      <div class="barra-interna" id="barraB"></div>
+    </div>
+    <span id="estadoB" class="estado-warn">⏳ Avanzando</span>
+  </div>
+
+  <div class="progreso-item">
+    <strong>Barra 3: Cuando completes ambas, acumularás en regalos $30</strong>
+    <div class="barra">
+      <div class="barra-interna" id="barraAB"></div>
+    </div>
+    <span id="estadoAB" class="estado-warn">⏳ Avanzando</span>
+  </div>
+</div>
+
+  <!-- BLOQUE SALIR DEL FLUJO -->
+<div class="card oculto" id="bloqueDecision" style="margin-top:20px;">
+  <h3 class="titulo-seccion">Salida del flujo</h3>
+  <div class="dato" id="textoDecision">
+    Esta opción solo está disponible mientras estás en la fase A.
+  </div>
+
+  <div class="fila-botones" style="margin-top:15px;">
+    <button type="button" onclick="resolverDecision('detener_automatico')">
+      Salir del flujo ahora
+    </button>
+  </div>
+</div>
+
+  <!-- BLOQUE RETIRO -->
+  <div class="card oculto" id="bloqueRetiro" style="margin-top:20px;">
+    <h3 class="titulo-seccion">Solicitud de retiro</h3>
+
+    <div class="dato">
+      <strong>Disponible para retirar:</strong>
+      $<span id="retiroDisponible">0</span>
+    </div>
+
+    <div class="dato apagado">
+      ⚠️ Monto mínimo de retiro: <strong>$15</strong>.
+      El monto no puede superar tu saldo disponible y la billetera debe ser compatible con red BEP20.
+      Solo se permite <strong>1 retiro diario</strong> por usuario.
+    </div>
+
+    <label for="montoRetiro">Monto a retirar</label>
+    <input
+      id="montoRetiro"
+      type="number"
+      min="15"
+      step="0.01"
+      placeholder="Ej: 15"
+    />
+
+    <label for="walletRetiro">Billetera destino</label>
+    <input id="walletRetiro" type="text" placeholder="0x..." />
+
+    <div class="fila-botones" style="margin-top:15px;">
+      <button type="button" id="btnSolicitarRetiro" onclick="solicitarOtpRetiro()">
+        Solicitar código OTP
+      </button>
+    </div>
+
+    <div id="bloqueCodigoRetiro" style="margin-top:15px;">
+      <label for="codigoOtpRetiro">Código OTP</label>
+      <input
+        id="codigoOtpRetiro"
+        type="text"
+        placeholder="Ingrese el código de 6 dígitos"
+        maxlength="6"
+        inputmode="numeric"
+      />
+
+      <div class="dato apagado" id="textoEstadoOtpRetiro" style="margin-top:8px;">
+        Primero solicita el código OTP y luego confírmalo aquí.
+      </div>
+
+      <div class="fila-botones" style="margin-top:15px;">
+        <button type="button" id="btnConfirmarRetiro" onclick="confirmarOtpRetiro()">
+          Confirmar retiro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCIONES EXTRA -->
+  <div class="fila-botones" style="margin-top:20px;">
+    <button type="button" onclick="cerrarSesion()">Cerrar sesión</button>
+    <button type="button" onclick="copiarEnlaceRegistro()">Link universal</button>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const API = "https://motor-1x3-backend-production.up.railway.app";
+const { createClient } = supabase;
+const supabaseClient = createClient(
+  "https://hybozykbfehfjldhaxpp.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5Ym96eWtiZmVoZmpsZGhheHBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMjU0OTMsImV4cCI6MjA3NDkwMTQ5M30.Bj1Jl3-g0gyp1UwsiK-cwjS8Cm2z7Il4_jZ-tCQhbwM"
+);
+const STORAGE_KEY = "email_panel";
+
+function porId(id) { return document.getElementById(id); }
+function obtenerValor(id) { return porId(id)?.value?.trim() || ""; }
+function guardarEmailLocal(email) { localStorage.setItem(STORAGE_KEY, String(email || '').trim().toLowerCase()); }
+function obtenerEmailLocal() { return localStorage.getItem(STORAGE_KEY); }
+function cargarEmailLocal() {
+  const email = obtenerEmailLocal();
+  const input = porId('email');
+  if (email && input) input.value = email;
+}
+function mostrar(id) { const el = porId(id); if (el) el.classList.remove('oculto'); }
+function ocultar(id) { const el = porId(id); if (el) el.classList.add('oculto'); }
+function dinero(v) { return Number(v || 0).toFixed(2); }
+function setTexto(id, valor) { const el = porId(id); if (el) el.textContent = valor; }
+function setHTML(id, valor) { const el = porId(id); if (el) el.innerHTML = valor; }
+
+function mostrarRespuesta(data) {
+  const box = porId('respuesta');
+  if (!box) return;
+  mostrar('modRespuesta');
+  if (typeof data === 'string') { box.textContent = data; return; }
+  if (data?.error) { box.textContent = `✖ ${data.error}`; return; }
+  if (data?.message) { box.textContent = `✔ ${data.message}`; return; }
+  box.textContent = '';
+}
+
+function obtenerNombreMaterial(id) {
+  const mapa = {
+    conciencia: 'Conciencia Espiritual',
+    autoestima: 'El Poder de Creer en Ti',
+    bisuteria: 'Emprendimiento en Bisutería',
+    postres: 'Guía para Emprender en Postres',
+    esencias: 'Cómo Crear Esencias en Frasco',
+    pollo_naranja: 'Receta de Pollo a la Naranja al Horno',
+    especias: 'Guía de Especias Naturales'
+  };
+  return mapa[id] || id || 'Material seleccionado';
+}
+
+function configurarTextoPago(data) {
+  const fueraDelFlujo = data?.automatico_activo === false || data?.bloque_actual === 'DETENIDO' || data?.nivel === 'DETENIDO';
+  setTexto('tituloPago', fueraDelFlujo ? '2. Reactivación de cuenta' : '2. Activación de cuenta');
+  setHTML('textoPago', fueraDelFlujo
+    ? 'Tu cuenta está fuera del flujo. Para volver a ingresar al sistema, realiza nuevamente tu aporte de <strong>15 USDT (BEP20)</strong> a esta billetera.'
+    : 'Para activar tu acceso a la comunidad, realiza tu aporte de <strong>15 USDT (BEP20)</strong> a esta billetera.');
+  setTexto('btnPago', fueraDelFlujo ? 'Confirmar reactivación' : 'Confirmar activación');
+  setHTML('avisoPago', fueraDelFlujo
+    ? 'Después de confirmarse el pago, volverás al sistema, se activará el modo automático y se habilitará un nuevo material para elegir.'
+    : 'Después de confirmarse el pago, tu cuenta ingresará al sistema y se habilitará un material para elegir.');
+}
+
+function controlarVista(data) {
+  ['modRegistro','modPago','modMaterial','modCatalogoMaterial','modAvance','bloqueDecision','bloqueRetiro'].forEach(ocultar);
+  if (!data || !data.estado) { mostrar('modRegistro'); return; }
+  mostrar('modRespuesta');
+  const fueraDelFlujo = data.automatico_activo === false || data.bloque_actual === 'DETENIDO' || data.nivel === 'DETENIDO';
+
+  if (['INACTIVO','PENDIENTE_PAGO','PENDIENTE_ACTIVACION'].includes(data.estado)) {
+    mostrar('modPago');
+    configurarTextoPago(data);
+    return;
+  }
+
+  if (data.estado === 'ACTIVO' && fueraDelFlujo) {
+    mostrar('modPago');
+    mostrar('modAvance');
+    configurarTextoPago(data);
+    return;
+  }
+
+  if (data.estado === 'ACTIVO') {
+    mostrar('modMaterial');
+    mostrar('modAvance');
+    const puedeElegir = data.material?.basico_habilitado === true && data.descarga_usada?.basico !== true;
+    if (puedeElegir) mostrar('modCatalogoMaterial');
+  }
+}
+
+async function cargarCatalogoMaterial(email) {
+  const box = porId('catalogoMaterialBox');
+  if (!box) return;
+  try {
+    const res = await fetch(`${API}/materiales-disponibles/${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (!res.ok || !Array.isArray(data.opciones) || data.opciones.length === 0) {
+      box.innerHTML = '<span class="apagado">Aún no hay materiales para mostrar</span>';
+      return;
+    }
+    box.innerHTML = data.opciones.map(item => `
+      <div class="opcion-material" style="margin-top:12px;padding:12px;border:1px solid #334155;border-radius:10px;background:#0f172a;">
+        <strong>${item.titulo}</strong>
+        <p style="margin:8px 0 0 0;">${item.descripcion}</p>
+        <button type="button" class="btn-elegir-material" data-id="${item.id}">Elegir</button>
+      </div>`).join('');
+    document.querySelectorAll('.btn-elegir-material').forEach(btn => {
+      btn.onclick = () => elegirMaterial(btn.getAttribute('data-id'));
+    });
+  } catch (error) {
+    console.error('Error cargando catálogo:', error);
+    box.innerHTML = '<span class="apagado">No fue posible cargar el material</span>';
+  }
+}
+
+/* ========================
+   REGISTRAR
+======================== */
+let enviandoRegistro = false;
+
+async function registrar() {
+  if (enviandoRegistro) return;
+
+  const btn =
+    document.getElementById("btnRegistrarme") ||
+    Array.from(document.querySelectorAll("button")).find(b =>
+      (b.getAttribute("onclick") || "").includes("registrar")
+    );
+
+  const textoOriginal = btn ? btn.innerHTML : "Registrarme";
+
+  try {
+    enviandoRegistro = true;
+
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = "Registrando...";
+      btn.style.opacity = "0.7";
+      btn.style.cursor = "not-allowed";
+    }
+
+    const email = obtenerValor("email");
+    const password = obtenerValor("password");
+
+    if (!email || !password) {
+      alert("Ingrese correo y contraseña");
+      return;
+    }
+
+    const { data, error } = await supabaseClient.auth.signUp({
+      email,
+      password
+    });
+
+    if (error) {
+      alert("Error: " + error.message);
+      return;
+    }
+
+    if (!data || !data.user || !data.user.id) {
+      alert("No se pudo obtener el usuario registrado");
+      return;
+    }
+
+    const resEstructura = await fetch(`${API}/crear-estructura`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: data.user.id,
+        email: email
+      })
+    });
+
+    const rawEstructura = await resEstructura.text();
+    let dataEstructura = {};
+
+    try {
+      dataEstructura = rawEstructura ? JSON.parse(rawEstructura) : {};
+    } catch (_) {}
+
+    if (!resEstructura.ok) {
+      alert(
+        dataEstructura.message ||
+        dataEstructura.error ||
+        rawEstructura ||
+        "Registro creado, pero falló la estructura"
+      );
+      return;
+    }
+
+    guardarEmailLocal(email);
+
+    await cargarPanel(false);
+
+    const modRespuesta = document.getElementById("modRespuesta");
+    if (modRespuesta) modRespuesta.classList.remove("oculto");
+
+    mostrarRespuesta({
+      message: "Registro exitoso. Ahora realiza tu aporte para activar tu cuenta."
+    });
+
+  } catch (err) {
+    console.error("❌ Error en registrar():", err);
+    alert("Error inesperado en el registro");
+  } finally {
+    enviandoRegistro = false;
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = textoOriginal;
+      btn.style.opacity = "";
+      btn.style.cursor = "";
+    }
+  }
+}
+
+/* ========================
+   INICIAR SESIÓN / CARGAR MI PANEL
+======================== */
+let cargandoSesion = false;
+
+async function iniciarSesion() {
+  if (cargandoSesion) return;
+
+  const btn =
+    document.getElementById("btnCargarPanel") ||
+    Array.from(document.querySelectorAll("button")).find(b =>
+      (b.getAttribute("onclick") || "").includes("iniciarSesion")
+    );
+
+  const textoOriginal = btn ? btn.innerHTML : "Cargar mi panel";
+
+  try {
+    cargandoSesion = true;
+
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = "Cargando...";
+      btn.style.opacity = "0.7";
+      btn.style.cursor = "not-allowed";
+    }
+
+    const email = obtenerValor("email");
+    const password = obtenerValor("password");
+
+    if (!email || !password) {
+      alert("Ingrese correo y contraseña");
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      alert("Error: " + error.message);
+      return;
+    }
+
+    guardarEmailLocal(email);
+
+    await cargarPanel(false);
+
+    const modRespuesta = document.getElementById("modRespuesta");
+    if (modRespuesta) modRespuesta.classList.remove("oculto");
+
+    mostrarRespuesta({
+      message: "Bienvenido. Tu panel fue cargado correctamente."
+    });
+
+  } catch (err) {
+    console.error("❌ Error en iniciarSesion():", err);
+    alert("Error inesperado al cargar el panel");
+  } finally {
+    cargandoSesion = false;
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = textoOriginal;
+      btn.style.opacity = "";
+      btn.style.cursor = "";
+    }
+  }
+}
+
+/* ========================
+   REPORTAR PAGO
+======================== */
+async function reportarPago() {
+  const btn =
+    document.getElementById("btnPago") ||
+    document.querySelector("#modPago .fila-botones button");
+
+  const restaurarBoton = () => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = "Confirmar activación";
+      btn.style.opacity = "";
+      btn.style.cursor = "";
+    }
+  };
+
+  if (btn && btn.disabled) return;
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = "Validando...";
+    btn.style.opacity = "0.7";
+    btn.style.cursor = "not-allowed";
+  }
+
+  const email = obtenerEmailLocal() || obtenerValor("email");
+  const txid = obtenerValor("txid");
+
+  if (!email || !txid) {
+    mostrarRespuesta({ error: "Ingrese correo y hash" });
+    restaurarBoton();
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/reportar-pago`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, txid })
+    });
+
+    const raw = await res.text();
+    let data = {};
+
+    try {
+      data = raw ? JSON.parse(raw) : {};
+    } catch (_) {}
+
+    if (!res.ok) {
+      mostrarRespuesta({
+        error: data.error || data.message || "Error al reportar pago"
+      });
+      return;
+    }
+
+    await cargarPanel(false);
+
+    mostrarRespuesta({
+      message: data.message || "Cuenta activada correctamente"
+    });
+
+  } catch (err) {
+    console.error("❌ Error en reportarPago():", err);
+    mostrarRespuesta({
+      error: "Error de conexión con el servidor"
+    });
+  } finally {
+    restaurarBoton();
+  }
+}
+
+async function elegirMaterial(id) {
+  try {
+    const email = obtenerEmailLocal() || obtenerValor('email');
+    if (!email) { alert('No hay sesión activa'); return; }
+    const res = await fetch(`${API}/elegir-material`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, material_id: id })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) { alert(data.error || 'No puedes elegir más material'); return; }
+    if (!data.material?.url) { alert('No llegó URL del material'); return; }
+    window.open(data.material.url, '_blank');
+    await cargarPanel();
+  } catch (error) {
+    console.error('Error al elegir material:', error);
+    alert('Error al elegir material');
+  }
+}
+
+/* ========================
+   CARGAR PANEL
+======================== */
+async function cargarPanel(mostrarMensajeExito = true) {
+  try {
+    const email = obtenerEmailLocal() || obtenerValor("email");
+
+    console.log("📥 cargarPanel() email:", email);
+
+    if (!email) {
+      controlarVista({ estado: "PENDIENTE_ACTIVACION" });
+      mostrarRespuesta({
+        error: "No se encontró un correo para cargar el panel"
+      });
+      return;
+    }
+
+    const res = await fetch(`${API}/resumen/${encodeURIComponent(email)}`);
+    const raw = await res.text();
+
+    console.log("📦 RESPUESTA RAW /resumen:", raw);
+
+    let data = {};
+    try {
+      data = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      throw new Error("La respuesta de /resumen no es JSON válido");
+    }
+
+    console.log("✅ DATA /resumen:", data);
+
+    if (!res.ok) {
+      controlarVista({ estado: "PENDIENTE_ACTIVACION" });
+      mostrarRespuesta({
+        error: data.error || data.message || "Error cargando panel"
+      });
+      return;
+    }
+
+    data.material = data.material || {};
+    data.descarga_usada = data.descarga_usada || {};
+    data.progreso_visible = data.progreso_visible || {};
+    data.material_seleccionado = data.material_seleccionado || {};
+    data.email = data.email || email;
+    data.estado = data.estado || "PENDIENTE_ACTIVACION";
+
+    guardarEmailLocal(email);
+
+    controlarVista(data);
+    pintarPanel(data);
+
+    if (mostrarMensajeExito) {
+      const modRespuesta = document.getElementById("modRespuesta");
+      if (modRespuesta) modRespuesta.classList.remove("oculto");
+
+      mostrarRespuesta({
+        message: "Panel cargado correctamente."
+      });
+    }
+
+  } catch (err) {
+    console.error("❌ Error real en cargarPanel():", err);
+
+    controlarVista({ estado: "PENDIENTE_ACTIVACION" });
+
+    const modRespuesta = document.getElementById("modRespuesta");
+    if (modRespuesta) modRespuesta.classList.remove("oculto");
+
+    mostrarRespuesta({
+      error: "Error cargando panel: " + err.message
+    });
+  }
+}
+
+function pintarPanel(data) {
+  const fueraDelFlujo = data.automatico_activo === false || data.bloque_actual === 'DETENIDO' || data.nivel === 'DETENIDO';
+  setTexto('estadoTexto', data.estado || '-');
+  setTexto('u_email', data.email || '-');
+  setTexto('u_saldo', dinero(data.saldo_acumulado));
+  setTexto('u_saldo_retiro', dinero(data.saldo_disponible_retiro));
+  setTexto('u_ciclos_pequenos', String(Number(data.ciclos_pequenos || 0)));
+  setTexto('u_automatico', fueraDelFlujo ? 'Apagado' : 'Activo');
+  setTexto('u_wallet', 'Se solicita al retirar');
+  setTexto('u_red', data.wallet_red || 'BEP20');
+  setTexto('u_retirado', dinero(data.total_retirado));
+  setTexto('u_bloque_actual', fueraDelFlujo ? 'Fuera del flujo' : (data.bloque_actual || data.nivel || 'A'));
+  setTexto('retiroDisponible', dinero(data.saldo_disponible_retiro));
+  const walletDestino = porId('walletDestino');
+  if (walletDestino) walletDestino.textContent = data.pago_inicial?.billetera_destino || '0x08cc7d080473435c47cc2a89f5e10a1eecb81796';
+  setTexto('estadoCuenta', data.estado === 'ACTIVO' ? '✅ Cuenta activa' : '⏳ Pendiente de activación');
+  setTexto('materialBasico', data.descarga_usada?.basico ? 'Entregado' : (data.material?.basico_habilitado ? 'Disponible para elegir' : 'No disponible'));
+  configurarTextoPago(data);
+
+  const materialBasicoId = data.material_basico_id || null;
+  const bloqueMateriales = porId('bloque-materiales');
+  if (bloqueMateriales) {
+    if (data.descarga_usada?.basico && materialBasicoId) {
+      bloqueMateriales.style.display = 'block';
+      bloqueMateriales.innerHTML = `<div class="estado-ok" style="margin-bottom:8px;">✅ Material digital entregado: ${obtenerNombreMaterial(materialBasicoId)}</div>`;
+    } else {
+      bloqueMateriales.style.display = 'none';
+      bloqueMateriales.innerHTML = '';
+    }
+  }
+
+  const estaEnA = data.bloque_actual === 'A' || data.nivel === 'A';
+const estaEnB = data.bloque_actual === 'B' || data.nivel === 'B';
+
+const modCatalogoMaterial = document.getElementById('modCatalogoMaterial');
+
+if (modCatalogoMaterial) {
+  const puedeElegir =
+    data.estado === 'ACTIVO' &&
+    estaEnA &&
+    data.material?.basico_habilitado === true &&
+    data.descarga_usada?.basico !== true &&
+    !fueraDelFlujo;
+
+  if (estaEnB) {
+    ocultar('modMaterial');
+    ocultar('modCatalogoMaterial');
+  } else if (puedeElegir) {
+    mostrar('modMaterial');
+    mostrar('modCatalogoMaterial');
+    cargarCatalogoMaterial(data.email);
+  } else {
+    ocultar('modCatalogoMaterial');
+  }
+}
+
+const puedeSalirAhora =
+  data.estado === 'ACTIVO' &&
+  estaEnA &&
+  data.puede_apagar_automatico === true &&
+  data.descarga_usada?.basico !== true &&
+  !fueraDelFlujo;
+
+if (puedeSalirAhora) {
+  mostrar('bloqueDecision');
+} else {
+  ocultar('bloqueDecision');
+}
+
+if (Number(data.saldo_disponible_retiro || 0) >= 15) {
+  mostrar('bloqueRetiro');
+} else {
+  ocultar('bloqueRetiro');
+}
+
+actualizarBarras(data);
+}
+
+function actualizarBarras(data) {
+  const progreso = data.progreso_visible || {};
+  const mostrarBarras = progreso.mostrar_barras === true;
+  const bloqueBarras = porId('bloqueBarras');
+  if (bloqueBarras) bloqueBarras.style.display = mostrarBarras ? 'block' : 'none';
+  if (!mostrarBarras) return;
+  const hijosA = Number(progreso.hijos_a || 0);
+  const hijosB = Number(progreso.hijos_b || 0);
+  const progresoA = Math.min((hijosA / 3) * 100, 100);
+  const progresoB = Math.min((hijosB / 3) * 100, 100);
+  const progresoAB = Math.min(((hijosA + hijosB) / 6) * 100, 100);
+  const setBarra = (id, valor) => { const el = porId(id); if (el) el.style.width = valor + '%'; };
+  const setEstado = (id, texto, clase) => { const el = porId(id); if (el) { el.innerHTML = texto; el.className = clase; } };
+  setBarra('barraA', progresoA);
+  setBarra('barraB', progresoB);
+  setBarra('barraAB', progresoAB);
+  setEstado('estadoA', hijosA >= 3 ? '✅ Recompensa alcanzada' : '⏳ Avanzando', hijosA >= 3 ? 'estado-ok' : 'estado-warn');
+  setEstado('estadoB', hijosB >= 3 ? '✅ Recompensa alcanzada' : '⏳ Avanzando', hijosB >= 3 ? 'estado-ok' : 'estado-warn');
+  setEstado('estadoAB', hijosA >= 3 && hijosB >= 3 ? '🏆 Recompensa total alcanzada' : '⏳ Avanzando', hijosA >= 3 && hijosB >= 3 ? 'estado-ok' : 'estado-warn');
+}
+
+let decisionEnProceso = false;
+async function resolverDecision(decision) {
+  if (decisionEnProceso) return;
+  try {
+    const email = obtenerEmailLocal();
+    if (!email) { alert('No hay sesión activa'); return; }
+    if (decision !== 'detener_automatico') { alert('Acción inválida'); return; }
+    if (!confirm('¿Deseas apagar el modo automático?')) return;
+    decisionEnProceso = true;
+    const res = await fetch(`${API}/resolver-decision`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, decision })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) { alert(data.error || 'Error apagando modo automático'); return; }
+    alert(data.message || 'Modo automático apagado correctamente');
+    await cargarPanel();
+  } catch (error) {
+    console.error('Error en resolverDecision:', error);
+    alert('Error de conexión con el servidor');
+  } finally {
+    decisionEnProceso = false;
+  }
+}
+
+async function copiarEnlaceRegistro() {
+  const enlace = 'https://panel.misemilla.com/';
+  try {
+    await navigator.clipboard.writeText(enlace);
+    alert('Enlace de registro copiado correctamente');
+  } catch (error) {
+    console.error('Error copiando enlace:', error);
+    alert('No se pudo copiar el enlace');
+  }
+}
+
+let otpRetiroEnProceso = false;
+let confirmarRetiroEnProceso = false;
+function actualizarEstadoOtpRetiro(texto) { const el = porId('textoEstadoOtpRetiro'); if (el) el.textContent = texto; }
+function limpiarFormularioOtpRetiro() {
+  if (porId('codigoOtpRetiro')) porId('codigoOtpRetiro').value = '';
+  if (porId('montoRetiro')) porId('montoRetiro').value = '';
+  if (porId('walletRetiro')) porId('walletRetiro').value = '';
+  const btnS = porId('btnSolicitarRetiro');
+  const btnC = porId('btnConfirmarRetiro');
+  otpRetiroEnProceso = false;
+  confirmarRetiroEnProceso = false;
+  if (btnS) { btnS.disabled = false; btnS.textContent = 'Solicitar código OTP'; }
+  if (btnC) { btnC.disabled = false; btnC.textContent = 'Confirmar retiro'; }
+  actualizarEstadoOtpRetiro('Primero solicita el código OTP y luego confírmalo aquí.');
+}
+
+async function solicitarOtpRetiro() {
+  if (otpRetiroEnProceso) return;
+  const email = obtenerEmailLocal();
+  const wallet = obtenerValor('walletRetiro');
+  const monto = Number(obtenerValor('montoRetiro') || 0);
+  const disponible = Number((porId('retiroDisponible')?.textContent || '0').replace(',', '.'));
+  if (!email) { alert('No hay sesión activa'); return; }
+  if (!wallet || !/^0x[a-fA-F0-9]{40}$/.test(wallet)) { alert('La billetera no parece válida para red BEP20'); return; }
+  if (!monto || Number.isNaN(monto)) { alert('Ingrese el monto a retirar'); return; }
+  if (monto < 15) { alert('El monto mínimo de retiro es $15'); return; }
+  if (monto > disponible) { alert(`El monto máximo permitido para este retiro es $${dinero(disponible)}`); return; }
+  const btn = porId('btnSolicitarRetiro');
+  try {
+    otpRetiroEnProceso = true;
+    if (btn) { btn.disabled = true; btn.textContent = 'Enviando código...'; }
+    const res = await fetch(`${API}/solicitar-otp-retiro`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, wallet_destino: wallet, monto_solicitado: Number(monto.toFixed(2)) })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      otpRetiroEnProceso = false;
+      if (btn) { btn.disabled = false; btn.textContent = 'Solicitar código OTP'; }
+      alert(data.error || 'No se pudo enviar el OTP');
+      return;
+    }
+    if (btn) btn.textContent = 'Código enviado';
+    actualizarEstadoOtpRetiro(`Código enviado para retiro de $${dinero(data.monto)}. Ingresa el OTP recibido en tu correo.`);
+    alert(`Código OTP enviado correctamente para retirar $${dinero(data.monto)}.`);
+  } catch (error) {
+    console.error('Error en solicitarOtpRetiro:', error);
+    otpRetiroEnProceso = false;
+    if (btn) { btn.disabled = false; btn.textContent = 'Solicitar código OTP'; }
+    alert('Error de conexión al solicitar OTP');
+  }
+}
+
+async function confirmarOtpRetiro() {
+  if (confirmarRetiroEnProceso) return;
+  const email = obtenerEmailLocal();
+  const codigo = obtenerValor('codigoOtpRetiro');
+  if (!email) { alert('No hay sesión activa'); return; }
+  if (!/^\d{6}$/.test(codigo)) { alert('El código OTP debe tener 6 dígitos'); return; }
+  const btn = porId('btnConfirmarRetiro');
+  try {
+    confirmarRetiroEnProceso = true;
+    if (btn) { btn.disabled = true; btn.textContent = 'Confirmando retiro...'; }
+    const res = await fetch(`${API}/confirmar-otp-retiro`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, codigo })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      confirmarRetiroEnProceso = false;
+      if (btn) { btn.disabled = false; btn.textContent = 'Confirmar retiro'; }
+      alert(data.error || 'No se pudo confirmar el retiro');
+      return;
+    }
+    alert(data.message || 'Retiro confirmado correctamente');
+    limpiarFormularioOtpRetiro();
+    await cargarPanel();
+  } catch (error) {
+    console.error('Error en confirmarOtpRetiro:', error);
+    confirmarRetiroEnProceso = false;
+    if (btn) { btn.disabled = false; btn.textContent = 'Confirmar retiro'; }
+    alert('Error de conexión al confirmar retiro');
+  }
+}
+
+async function cerrarSesion() {
+  try {
+    await supabaseClient.auth.signOut();
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  } catch (error) {
+    console.error('Error cerrando sesión:', error);
+    alert('No se pudo cerrar sesión');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  cargarEmailLocal();
+});
+
+window.registrar = registrar;
+window.iniciarSesion = iniciarSesion;
+window.cargarPanel = cargarPanel;
+window.reportarPago = reportarPago;
+window.elegirMaterial = elegirMaterial;
+window.resolverDecision = resolverDecision;
+window.solicitarOtpRetiro = solicitarOtpRetiro;
+window.confirmarOtpRetiro = confirmarOtpRetiro;
+window.cerrarSesion = cerrarSesion;
+window.copiarEnlaceRegistro = copiarEnlaceRegistro;
+</script>
+</body>
+</html>
