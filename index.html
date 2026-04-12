@@ -1235,11 +1235,16 @@ async function iniciarSesion() {
       btn.style.cursor = "not-allowed";
     }
 
-    const email = obtenerValor("email");
-    const password = obtenerValor("password");
+    const email = (obtenerValor("email") || "").trim().toLowerCase();
+    const password = (obtenerValor("password") || "").trim();
+
+    const modRespuesta = document.getElementById("modRespuesta");
+    if (modRespuesta) modRespuesta.classList.remove("oculto");
 
     if (!email || !password) {
-      alert("Ingrese correo y contraseña");
+      mostrarRespuesta({
+        error: "Ingresa tu correo y tu contraseña para cargar el panel."
+      });
       return;
     }
 
@@ -1249,7 +1254,28 @@ async function iniciarSesion() {
     });
 
     if (error) {
-      alert("Error: " + error.message);
+      const msg = String(error.message || "").toLowerCase();
+
+      if (
+        msg.includes("invalid login credentials") ||
+        msg.includes("invalid_credentials")
+      ) {
+        mostrarRespuesta({
+          error: "La contraseña no es correcta o las credenciales no coinciden. Si no la recuerdas, usa la opción de recuperación."
+        });
+        return;
+      }
+
+      if (msg.includes("email not confirmed")) {
+        mostrarRespuesta({
+          error: "Debes confirmar tu correo antes de cargar tu panel."
+        });
+        return;
+      }
+
+      mostrarRespuesta({
+        error: "Error al cargar el panel: " + error.message
+      });
       return;
     }
 
@@ -1257,16 +1283,19 @@ async function iniciarSesion() {
 
     await cargarPanel(false);
 
-    const modRespuesta = document.getElementById("modRespuesta");
-    if (modRespuesta) modRespuesta.classList.remove("oculto");
-
     mostrarRespuesta({
       message: "Bienvenido. Tu panel fue cargado correctamente."
     });
 
   } catch (err) {
     console.error("❌ Error en iniciarSesion():", err);
-    alert("Error inesperado al cargar el panel");
+
+    const modRespuesta = document.getElementById("modRespuesta");
+    if (modRespuesta) modRespuesta.classList.remove("oculto");
+
+    mostrarRespuesta({
+      error: "Error inesperado al cargar el panel."
+    });
   } finally {
     cargandoSesion = false;
 
