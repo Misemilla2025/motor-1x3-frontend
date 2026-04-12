@@ -446,7 +446,7 @@ video {
   required
 >
 
-      <label for="password">Contraseña</label>
+<label for="password">Contraseña</label>
 <div class="input-password-wrap">
   <input
     id="password"
@@ -466,7 +466,7 @@ video {
   </button>
 </div>
 
-      <div class="fila-botones">
+<div class="fila-botones">
   <button id="btnRegistrarme" type="button" onclick="registrar()">Registrarme</button>
   <button id="btnCargarPanel" type="button" onclick="iniciarSesion()">Cargar mi panel</button>
 </div>
@@ -476,6 +476,9 @@ video {
     Olvidé mi contraseña
   </a>
 </div>
+
+    </div>
+  </div>
 
   <!-- MÓDULO 2 -->
 <div class="card oculto" id="modPago">
@@ -521,17 +524,26 @@ video {
 
   <!-- MÓDULO 3 -->
 <div class="card oculto" id="modMaterial">
- <h3 class="titulo-seccion">3. Biblioteca digital</h3>
-<div class="dato"><strong>Estado de cuenta:</strong> <span id="estadoCuenta">⏳ Pendiente de activación</span></div>
-<div class="dato"><strong>Biblioteca digital:</strong> <span id="materialBasico">No disponible</span></div>
+  <h3 class="titulo-seccion">3. Biblioteca digital</h3>
 
-<div id="bloque-materiales" style="
-  display:none;
-  margin-top:15px;
-  padding:10px;
-  border-radius:10px;
-  background:#1e293b;
-"></div>
+  <div class="dato">
+    <strong>Estado de cuenta:</strong>
+    <span id="estadoCuenta">⏳ Pendiente de activación</span>
+  </div>
+
+  <div class="dato">
+    <strong>Biblioteca digital:</strong>
+    <span id="materialBasico">No disponible</span>
+  </div>
+
+  <div id="bloque-materiales" style="
+    display:none;
+    margin-top:15px;
+    padding:10px;
+    border-radius:10px;
+    background:#1e293b;
+  "></div>
+</div>
 
 <div class="card oculto" id="modCatalogoMaterial">
   <h2 class="titulo-seccion">Elegir material</h2>
@@ -563,40 +575,40 @@ video {
   </div>
 
   <div id="bloqueBarras">
-  <div class="dato apagado" style="margin-top: 14px; margin-bottom: 16px;">
-    Cuando completes tus regalos <strong>$30</strong>, si sigues en modo automático,
-    el sistema toma de tu acumulado <strong>$15</strong> para otra vuelta y deja <strong>$15 disponibles para retiro</strong>.
+    <div class="dato apagado" style="margin-top: 14px; margin-bottom: 16px;">
+      Cuando completes tus regalos <strong>$30</strong>, si sigues en modo automático,
+      el sistema toma de tu acumulado <strong>$15</strong> para otra vuelta y deja <strong>$15 disponibles para retiro</strong>.
 
-    <br><br>
+      <br><br>
 
-    Si decides salir, dejarás de participar en el flujo y conservarás tu cuenta.
-    Para volver a ingresar nuevamente, deberás adquirir un nuevo material de <strong>$15</strong>.
-  </div>
-
-  <div class="progreso-item">
-    <strong>Barra 1: Cuando esta barra se complete, recibirás un regalo de $15</strong>
-    <div class="barra">
-      <div class="barra-interna" id="barraA"></div>
+      Si decides salir, dejarás de participar en el flujo y conservarás tu cuenta.
+      Para volver a ingresar nuevamente, deberás adquirir un nuevo material de <strong>$15</strong>.
     </div>
-    <span id="estadoA" class="estado-warn">⏳ Avanzando</span>
-  </div>
 
-  <div class="progreso-item">
-    <strong>Barra 2: Cuando esta barra se complete, recibirás otro regalo de $15</strong>
-    <div class="barra">
-      <div class="barra-interna" id="barraB"></div>
+    <div class="progreso-item">
+      <strong>Barra 1: Cuando esta barra se complete, recibirás un regalo de $15</strong>
+      <div class="barra">
+        <div class="barra-interna" id="barraA"></div>
+      </div>
+      <span id="estadoA" class="estado-warn">⏳ Avanzando</span>
     </div>
-    <span id="estadoB" class="estado-warn">⏳ Avanzando</span>
-  </div>
 
-  <div class="progreso-item">
-    <strong>Barra 3: Cuando completes ambas, acumularás en regalos $30</strong>
-    <div class="barra">
-      <div class="barra-interna" id="barraAB"></div>
+    <div class="progreso-item">
+      <strong>Barra 2: Cuando esta barra se complete, recibirás otro regalo de $15</strong>
+      <div class="barra">
+        <div class="barra-interna" id="barraB"></div>
+      </div>
+      <span id="estadoB" class="estado-warn">⏳ Avanzando</span>
     </div>
-    <span id="estadoAB" class="estado-warn">⏳ Avanzando</span>
+
+    <div class="progreso-item">
+      <strong>Barra 3: Cuando completes ambas, acumularás en regalos $30</strong>
+      <div class="barra">
+        <div class="barra-interna" id="barraAB"></div>
+      </div>
+      <span id="estadoAB" class="estado-warn">⏳ Avanzando</span>
+    </div>
   </div>
-</div>
 
   <!-- BLOQUE SALIR DEL FLUJO -->
 <div class="card oculto" id="bloqueDecision" style="margin-top:20px;">
@@ -1557,18 +1569,34 @@ function actualizarBarras(data) {
   const progreso = data.progreso_visible || {};
   const mostrarBarras = progreso.mostrar_barras === true;
   const bloqueBarras = porId('bloqueBarras');
+
   if (bloqueBarras) bloqueBarras.style.display = mostrarBarras ? 'block' : 'none';
   if (!mostrarBarras) return;
+
   const hijosA = Number(progreso.hijos_a || 0);
   const hijosB = Number(progreso.hijos_b || 0);
+
   const progresoA = Math.min((hijosA / 3) * 100, 100);
   const progresoB = Math.min((hijosB / 3) * 100, 100);
   const progresoAB = Math.min(((hijosA + hijosB) / 6) * 100, 100);
-  const setBarra = (id, valor) => { const el = porId(id); if (el) el.style.width = valor + '%'; };
-  const setEstado = (id, texto, clase) => { const el = porId(id); if (el) { el.innerHTML = texto; el.className = clase; } };
+
+  const setBarra = (id, valor) => {
+    const el = porId(id);
+    if (el) el.style.width = valor + '%';
+  };
+
+  const setEstado = (id, texto, clase) => {
+    const el = porId(id);
+    if (el) {
+      el.innerHTML = texto;
+      el.className = clase;
+    }
+  };
+
   setBarra('barraA', progresoA);
   setBarra('barraB', progresoB);
   setBarra('barraAB', progresoAB);
+
   setEstado('estadoA', hijosA >= 3 ? '✅ Recompensa alcanzada' : '⏳ Avanzando', hijosA >= 3 ? 'estado-ok' : 'estado-warn');
   setEstado('estadoB', hijosB >= 3 ? '✅ Recompensa alcanzada' : '⏳ Avanzando', hijosB >= 3 ? 'estado-ok' : 'estado-warn');
   setEstado('estadoAB', hijosA >= 3 && hijosB >= 3 ? '🏆 Recompensa total alcanzada' : '⏳ Avanzando', hijosA >= 3 && hijosB >= 3 ? 'estado-ok' : 'estado-warn');
