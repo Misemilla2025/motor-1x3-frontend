@@ -1099,7 +1099,7 @@ const correoFinal = validacionCorreo.correo;
 
       if (estado === "confirmado") {
         mostrarRespuesta({
-          error: "Este correo ya está registrado y ya fue confirmado. Usa el botón 'Cargar mi panel'."
+          error: "Este correo ya está registrado y ya fue confirmado. Usa el botón 'Iniciar Sesión'."
         });
       } else if (estado === "no_confirmado") {
         guardarEmailLocal(email);
@@ -1112,7 +1112,7 @@ const correoFinal = validacionCorreo.correo;
         });
       } else {
         mostrarRespuesta({
-          error: "Este correo ya está registrado. Usa 'Cargar mi panel'."
+          error: "Este correo ya está registrado. Usa 'Iniciar Sesión'."
         });
       }
 
@@ -1241,7 +1241,7 @@ async function iniciarSesion() {
       (b.getAttribute("onclick") || "").includes("iniciarSesion")
     );
 
-  const textoOriginal = btn ? btn.innerHTML : "Cargar mi panel";
+  const textoOriginal = btn ? btn.innerHTML : "Iniciar Sesión";
 
   try {
     cargandoSesion = true;
@@ -1261,7 +1261,7 @@ async function iniciarSesion() {
 
     if (!email || !password) {
       mostrarRespuesta({
-        error: "Ingresa tu correo y tu contraseña para cargar el panel."
+        error: "Ingresa tu correo y tu contraseña para iniciar sesion."
       });
       return;
     }
@@ -1286,13 +1286,13 @@ async function iniciarSesion() {
 
       if (msg.includes("email not confirmed")) {
         mostrarRespuesta({
-          error: "Debes confirmar tu correo antes de cargar tu panel."
+          error: "Debes confirmar tu correo antes de iniciar sesion."
         });
         return;
       }
 
       mostrarRespuesta({
-        error: "Error al cargar el panel: " + error.message
+        error: "Error al iniciar sesion: " + error.message
       });
       return;
     }
