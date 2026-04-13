@@ -882,24 +882,41 @@ function controlarVista(data) {
 async function cargarCatalogoMaterial(email) {
   const box = porId('catalogoMaterialBox');
   if (!box) return;
+
   try {
-    const res = await fetch(`${API}/materiales-disponibles/${encodeURIComponent(email)}`);
-    const data = await res.json();
-    if (!res.ok || !Array.isArray(data.opciones) || data.opciones.length === 0) {
-      box.innerHTML = '<span class="apagado">Aún no hay materiales para mostrar</span>';
+    const token = await obtenerTokenSesion();
+
+    if (!token) {
+      box.innerHTML = '<span class="apagado">Tu sesion no es valida. Inicia sesion nuevamente</span>';
       return;
     }
+
+    const res = await fetch(`${API}/materiales-disponibles`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok || !Array.isArray(data.opciones) || data.opciones.length === 0) {
+      box.innerHTML = '<span class="apagado">Aun no hay materiales para mostrar</span>';
+      return;
+    }
+
     box.innerHTML = data.opciones.map(item => `
       <div class="opcion-material" style="margin-top:12px;padding:12px;border:1px solid #334155;border-radius:10px;background:#0f172a;">
         <strong>${item.titulo}</strong>
         <p style="margin:8px 0 0 0;">${item.descripcion}</p>
         <button type="button" class="btn-elegir-material" data-id="${item.id}">Elegir</button>
       </div>`).join('');
+
     document.querySelectorAll('.btn-elegir-material').forEach(btn => {
       btn.onclick = () => elegirMaterial(btn.getAttribute('data-id'));
     });
   } catch (error) {
-    console.error('Error cargando catálogo:', error);
+    console.error('Error cargando catalogo:', error);
     box.innerHTML = '<span class="apagado">No fue posible cargar el material</span>';
   }
 }
