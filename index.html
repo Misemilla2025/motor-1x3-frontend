@@ -710,7 +710,20 @@ function cargarEmailLocal() {
   const email = obtenerEmailLocal();
   const input = porId('email');
   if (email && input) input.value = email;
+
 }
+
+async function obtenerTokenSesion() {
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error) {
+    console.error("Error obteniendo sesión:", error);
+    return null;
+  }
+
+  return data?.session?.access_token || null;
+}
+
 function mostrar(id) { const el = porId(id); if (el) el.classList.remove('oculto'); }
 function ocultar(id) { const el = porId(id); if (el) el.classList.add('oculto'); }
 function dinero(v) { return Number(v || 0).toFixed(2); }
@@ -1412,6 +1425,7 @@ async function elegirMaterial(id) {
 async function cargarPanel(mostrarMensajeExito = true) {
   try {
     const email = obtenerEmailLocal() || obtenerValor("email");
+    const token = await obtenerTokenSesion();
 
     console.log("📥 cargarPanel() email:", email);
 
@@ -1423,7 +1437,21 @@ async function cargarPanel(mostrarMensajeExito = true) {
       return;
     }
 
-    const res = await fetch(`${API}/resumen/${encodeURIComponent(email)}`);
+    if (!token) {
+      controlarVista({ estado: "PENDIENTE_ACTIVACION" });
+      mostrarRespuesta({
+        error: "Tu sesión no es válida. Inicia sesión nuevamente."
+      });
+      return;
+    }
+
+    const res = await fetch(`${API}/resumen`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
     const raw = await res.text();
 
     console.log("📦 RESPUESTA RAW /resumen:", raw);
@@ -1452,7 +1480,7 @@ async function cargarPanel(mostrarMensajeExito = true) {
     data.email = data.email || email;
     data.estado = data.estado || "PENDIENTE_ACTIVACION";
 
-    guardarEmailLocal(email);
+    guardarEmailLocal(data.email || email);
 
     controlarVista(data);
     pintarPanel(data);
