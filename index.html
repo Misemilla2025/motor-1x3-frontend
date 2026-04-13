@@ -1404,15 +1404,25 @@ async function elegirMaterial(id) {
   try {
     const email = obtenerEmailLocal() || obtenerValor('email');
     if (!email) { alert('No hay sesión activa'); return; }
+
+    const token = await obtenerTokenSesion();
+    if (!token) { alert('Tu sesión no es válida. Inicia sesión nuevamente'); return; }
+
     const res = await fetch(`${API}/elegir-material`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, material_id: id })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ material_id: id })
     });
+
     const data = await res.json().catch(() => ({}));
     if (!res.ok) { alert(data.error || 'No puedes elegir más material'); return; }
     if (!data.material?.url) { alert('No llegó URL del material'); return; }
+
     window.open(data.material.url, '_blank');
-    await cargarPanel();
+    await cargarPanel(false);
   } catch (error) {
     console.error('Error al elegir material:', error);
     alert('Error al elegir material');
