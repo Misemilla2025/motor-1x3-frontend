@@ -1354,7 +1354,7 @@ async function reportarPago() {
   const restaurarBoton = () => {
     if (btn) {
       btn.disabled = false;
-      btn.innerHTML = "Confirmar activación";
+      btn.innerHTML = "Confirmar activacion";
       btn.style.opacity = "";
       btn.style.cursor = "";
     }
@@ -1369,11 +1369,17 @@ async function reportarPago() {
     btn.style.cursor = "not-allowed";
   }
 
-  const email = obtenerEmailLocal() || obtenerValor("email");
+  const token = await obtenerTokenSesion();
   const txid = obtenerValor("txid");
 
-  if (!email || !txid) {
-    mostrarRespuesta({ error: "Ingrese correo y hash" });
+  if (!token) {
+    mostrarRespuesta({ error: "Tu sesion no es valida. Inicia sesion nuevamente" });
+    restaurarBoton();
+    return;
+  }
+
+  if (!txid) {
+    mostrarRespuesta({ error: "Ingrese hash" });
     restaurarBoton();
     return;
   }
@@ -1382,9 +1388,10 @@ async function reportarPago() {
     const res = await fetch(`${API}/reportar-pago`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify({ email, txid })
+      body: JSON.stringify({ txid })
     });
 
     const raw = await res.text();
@@ -1410,7 +1417,7 @@ async function reportarPago() {
   } catch (err) {
     console.error("❌ Error en reportarPago():", err);
     mostrarRespuesta({
-      error: "Error de conexión con el servidor"
+      error: "Error de conexion con el servidor"
     });
   } finally {
     restaurarBoton();
