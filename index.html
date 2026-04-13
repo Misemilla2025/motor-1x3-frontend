@@ -1678,17 +1678,25 @@ let decisionEnProceso = false;
 async function resolverDecision(decision) {
   if (decisionEnProceso) return;
   try {
-    const email = obtenerEmailLocal();
-    if (!email) { alert('No hay sesión activa'); return; }
+    const token = await obtenerTokenSesion();
+    if (!token) { alert('Tu sesión no es válida. Inicia sesión nuevamente'); return; }
     if (decision !== 'detener_automatico') { alert('Acción inválida'); return; }
     if (!confirm('¿Deseas apagar el modo automático?')) return;
+
     decisionEnProceso = true;
+
     const res = await fetch(`${API}/resolver-decision`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, decision })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ decision })
     });
+
     const data = await res.json().catch(() => ({}));
     if (!res.ok) { alert(data.error || 'Error apagando modo automático'); return; }
+
     alert(data.message || 'Modo automático apagado correctamente');
     await cargarPanel();
   } catch (error) {
