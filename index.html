@@ -415,17 +415,15 @@ video {
 </div>
 
 <div class="bloque-video">
-  <h3>🎬 Conoce Mi Semilla</h3>
-  <video controls preload="metadata" playsinline class="video-presentacion">
-    <source src="video-presentacion.mp4" type="video/mp4">
+  <h3>🎥 Conoce Mi Semilla</h3>
+  <video id="videoPresentacion" controls preload="metadata" playsinline class="video-presentacion">
     Tu navegador no soporta la reproducción de video.
   </video>
 </div>
 
 <div class="bloque-video">
-  <h3>🖥️ Cómo usar tu Panel</h3>
-  <video controls preload="metadata" playsinline class="video-presentacion">
-    <source src="video-panel.mp4" type="video/mp4">
+  <h3>🎥 Cómo usar tu Panel</h3>
+  <video id="videoPanel" controls preload="metadata" playsinline class="video-presentacion">
     Tu navegador no soporta la reproducción de video.
   </video>
 </div>
@@ -1893,6 +1891,32 @@ document.addEventListener('DOMContentLoaded', () => {
   cargarEmailLocal();
 });
 
+function cargarVideosPublicos() {
+  const videoPresentacion = document.getElementById("videoPresentacion");
+  const videoPanel = document.getElementById("videoPanel");
+
+  const urlPresentacion = supabaseClient
+    .storage
+    .from("panel-publico")
+    .getPublicUrl("videos/video-presentacion.mp4");
+
+  const urlPanel = supabaseClient
+    .storage
+    .from("panel-publico")
+    .getPublicUrl("videos/video-panel.mp4");
+
+  if (videoPresentacion && urlPresentacion?.data?.publicUrl) {
+    videoPresentacion.src = urlPresentacion.data.publicUrl;
+    videoPresentacion.load();
+  }
+
+  if (videoPanel && urlPanel?.data?.publicUrl) {
+    videoPanel.src = urlPanel.data.publicUrl;
+    videoPanel.load();
+  }
+}
+
+cargarVideosPublicos();
 window.registrar = registrar;
 window.iniciarSesion = iniciarSesion;
 window.cargarPanel = cargarPanel;
