@@ -1426,9 +1426,6 @@ async function reportarPago() {
 
 async function elegirMaterial(id) {
   try {
-    const email = obtenerEmailLocal() || obtenerValor('email');
-    if (!email) { alert('No hay sesión activa'); return; }
-
     const token = await obtenerTokenSesion();
     if (!token) { alert('Tu sesión no es válida. Inicia sesión nuevamente'); return; }
 
@@ -1443,9 +1440,9 @@ async function elegirMaterial(id) {
 
     const data = await res.json().catch(() => ({}));
     if (!res.ok) { alert(data.error || 'No puedes elegir más material'); return; }
-    if (!data.material?.url) { alert('No llegó URL del material'); return; }
+    if (!data.material?.url) { alert('No llegó acceso temporal del material'); return; }
 
-    window.open(data.material.url, '_blank');
+    window.open(data.material.url, '_blank', 'noopener');
     await cargarPanel(false);
   } catch (error) {
     console.error('Error al elegir material:', error);
