@@ -695,11 +695,13 @@ video {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const API = "https://motor-1x3-backend-production.up.railway.app";
+
 const { createClient } = supabase;
 const supabaseClient = createClient(
   "https://hybozykbfehfjldhaxpp.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5Ym96eWtiZmVoZmpsZGhheHBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMjU0OTMsImV4cCI6MjA3NDkwMTQ5M30.Bj1Jl3-g0gyp1UwsiK-cwjS8Cm2z7Il4_jZ-tCQhbwM"
+  "sb_publishable_ULOtW-chjAPZoNw2-Lo_5g_EXDFrtL8"
 );
+
 const STORAGE_KEY = "email_panel";
 
 function porId(id) { return document.getElementById(id); }
