@@ -357,8 +357,8 @@ video {
   color:#d7e7ff;
   font-weight:500;
   line-height:1.7;
- margin-bottom:10px;
   display:block;
+  margin-top:10px;
 }
 
 .texto-panel-aviso{
@@ -376,8 +376,6 @@ video {
   border:1px solid rgba(245,158,11,0.35);
   padding:10px 12px;
   border-radius:10px;
-  margin-top:10px;
-  margin-bottom:10px;
 }
 
   </style>
@@ -516,7 +514,7 @@ video {
     </div>
   </div>
 
-  <!-- MÓDULO 2 -->
+<!-- MÓDULO 2 -->
 <div class="card oculto" id="modPago">
   <h2 class="titulo-seccion" id="tituloPago">2. Activación de cuenta</h2>
 
@@ -526,21 +524,20 @@ video {
   </div>
 
   <div class="dato" id="textoPago">
-  Para activar tu acceso a la comunidad, realiza tu regalo de <strong>15 USDT (BEP20)</strong> a esta billetera.
-  <br><br>
-  <span class="texto-panel-aviso">
-    ⚠️ Importante: envía un poco <strong>más de 15 USDT</strong>. Si por descuentos o comisiones llega menos de <strong>15 USDT</strong>,
-    el sistema <strong>no activará la cuenta</strong> y esa transacción <strong>no será válida para el ingreso</strong>.
-  </span>
-</div>
+    Para activar tu acceso a la comunidad, realiza tu regalo de <strong>15 USDT (BEP20)</strong> a esta billetera.
+  </div>
 
-<div class="dato texto-panel-secundario" id="avisoPago">
-  Después de confirmarse el regalo, tu cuenta ingresará a la comunidad y se habilitará el material para elegir.
-</div>
+  <div class="dato texto-panel-aviso" id="avisoMontoPago" style="margin-top:10px;">
+    ⚠️ Importante: envía un poco <strong>más de 15 USDT</strong>. Si por descuentos o comisiones llega menos de <strong>15 USDT</strong>, el sistema <strong>no activará la cuenta</strong> y esa transacción <strong>no será válida para el ingreso</strong>.
+  </div>
 
-<div class="dato texto-panel-aviso" id="avisoIntentosPago" style="margin-top:10px;">
-  ⚠️ Importante: si intentas validar un hash incorrecto <strong>5 veces</strong>, el sistema bloqueará temporalmente la validación durante <strong>30 minutos</strong> por seguridad.
-</div>
+  <div class="dato texto-panel-secundario" id="avisoPago">
+    Después de confirmarse el regalo, tu cuenta ingresará a la comunidad y se habilitará el material para elegir.
+  </div>
+
+  <div class="dato texto-panel-aviso" id="avisoIntentosPago" style="margin-top:10px;">
+    ⚠️ Importante: si intentas validar un hash incorrecto <strong>5 veces</strong>, el sistema bloqueará temporalmente la validación durante <strong>30 minutos</strong> por seguridad.
+  </div>
 
   <label for="txid">Hash de la transacción</label>
   <input id="txid" type="text" placeholder="0x..." />
