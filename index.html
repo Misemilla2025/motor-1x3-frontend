@@ -357,6 +357,8 @@ video {
   color:#d7e7ff;
   font-weight:500;
   line-height:1.7;
+ margin-bottom:10px;
+  display:block;
 }
 
 .texto-panel-aviso{
@@ -370,6 +372,12 @@ video {
   font-weight:700;
   line-height:1.6;
   display:block;
+  background:rgba(245,158,11,0.10);
+  border:1px solid rgba(245,158,11,0.35);
+  padding:10px 12px;
+  border-radius:10px;
+  margin-top:10px;
+  margin-bottom:10px;
 }
 
   </style>
@@ -592,8 +600,8 @@ video {
   <div class="grid-2">
     <div>
       <div class="dato"><strong>Correo:</strong> <span id="u_email">-</span></div>
-      <div class="dato"><strong>Regalos acumulados:</strong> $<span id="u_saldo">0</span></div>
-      <div class="dato"><strong>Regalos disponibles:</strong> $<span id="u_saldo_retiro">0</span></div>
+      <div class="dato"><strong>Regalos acumulados:</strong> <span id="u_saldo">0</span></div>
+      <div class="dato"><strong>Regalos disponibles:</strong> <span id="u_saldo_retiro">0</span></div>
       <div class="dato"><strong>Fases completadas:</strong> <span id="u_ciclos_pequenos">0</span></div>
       <div class="dato"><strong>Modo automático:</strong> <span id="u_automatico">Activo</span></div>
     </div>
@@ -601,27 +609,27 @@ video {
     <div>
       <div class="dato"><strong>Billetera de retiro:</strong> <span id="u_wallet">Se solicita al retirar</span></div>
       <div class="dato"><strong>Red permitida:</strong> <span id="u_red">BEP20</span></div>
-      <div class="dato"><strong>Total recibido:</strong> $<span id="u_retirado">0</span></div>
+      <div class="dato"><strong>Total recibido:</strong> <span id="u_retirado">0</span></div>
       <div class="dato"><strong>Ubicación actual:</strong> <span id="u_bloque_actual">A</span></div>
     </div>
   </div>
 
   <div id="bloqueBarras">
   <div class="dato texto-panel-importante" style="margin-top: 14px; margin-bottom: 16px;">
-    Cuando se acumulen <strong>30</strong> en tus regalos disponibles, si sigues en modo automático,
-    el sistema toma de tu acumulado <strong>15</strong> para dar nuevamente y deja
-    <strong>15 disponibles para retiro</strong>.
+    Cuando se acumulen <strong>30 USDT</strong> en tus regalos disponibles, si sigues en modo automático,
+    el sistema toma de tu acumulado <strong>15 USDT</strong> para dar nuevamente y deja
+    <strong>15 USDT disponibles para retiro</strong>.
 
     <br><br>
 
     <span class="texto-panel-secundario">
       Si decides salir, dejarás de participar en el flujo y conservarás tu cuenta.
-      Para volver a ingresar, ayuda a la comunidad nuevamente con <strong>15</strong>.
+      Para volver a ingresar, ayuda a la comunidad nuevamente con <strong>15 USDT</strong>.
     </span>
   </div>
 
   <div class="progreso-item">
-    <strong>Barra 1: Cuando esta barra se complete, recibirás un regalo de 15</strong>
+    <strong>Barra 1: Cuando esta barra se complete, recibirás un regalo de 15 USDT</strong>
     <div class="barra">
       <div class="barra-interna" id="barraA"></div>
     </div>
@@ -629,7 +637,7 @@ video {
   </div>
 
   <div class="progreso-item">
-    <strong>Barra 2: Cuando esta barra se complete, recibirás otro regalo de 15</strong>
+    <strong>Barra 2: Cuando esta barra se complete, recibirás otro regalo de 15 USDT</strong>
     <div class="barra">
       <div class="barra-interna" id="barraB"></div>
     </div>
@@ -637,7 +645,7 @@ video {
   </div>
 
   <div class="progreso-item">
-    <strong>Barra 3: Cuando completes ambas, acumularás en regalos disponibles 30</strong>
+    <strong>Barra 3: Cuando completes ambas, acumularás en regalos disponibles 30 USDT</strong>
     <div class="barra">
       <div class="barra-interna" id="barraAB"></div>
     </div>
@@ -660,19 +668,20 @@ video {
 </div>
 
   <!-- BLOQUE RETIRO -->
-  <div class="card oculto" id="bloqueRetiro" style="margin-top:20px;">
-    <h3 class="titulo-seccion">Solicitud de retiro</h3>
+<div class="card oculto" id="bloqueRetiro" style="margin-top:20px;">
+  <h3 class="titulo-seccion">Solicitud de retiro</h3>
 
-    <div class="dato">
-      <strong>Disponible para retirar:</strong>
-      $<span id="retiroDisponible">0</span>
-    </div>
+  <div class="dato">
+    <strong>Disponible para retirar:</strong>
+    <span id="retiroDisponible">0</span> USDT
+  </div>
 
-    <div class="dato apagado">
-      ⚠️ Monto mínimo de retiro: <strong>15</strong>.
-      El monto no puede superar tu saldo disponible y la billetera debe ser compatible con red BEP20.
-      Solo se permite <strong>1 retiro diario</strong> por usuario.
-    </div>
+  <div class="dato apagado">
+    ⚠️ Monto mínimo de retiro: <strong>15 USDT</strong>.
+    El monto no puede superar tu saldo disponible y la billetera debe ser compatible con red BEP20.
+    Solo se permite <strong>1 retiro diario</strong> por usuario.
+  </div>
+</div>
 
     <label for="montoRetiro">Monto a retirar</label>
     <input
