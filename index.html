@@ -347,6 +347,31 @@ video {
   opacity: 1;
 }
 
+.texto-panel-importante{
+  color:#eaf2ff;
+  font-weight:600;
+  line-height:1.7;
+}
+
+.texto-panel-secundario{
+  color:#d7e7ff;
+  font-weight:500;
+  line-height:1.7;
+}
+
+.texto-panel-aviso{
+  color:#ffd98a;
+  font-weight:700;
+  line-height:1.6;
+}
+
+.texto-panel-aviso{
+  color:#ffd98a;
+  font-weight:700;
+  line-height:1.6;
+  display:block;
+}
+
   </style>
 </head>
 <body>
@@ -496,9 +521,13 @@ video {
     Para activar tu acceso a la comunidad, realiza tu regalo de <strong>15 USDT (BEP20)</strong> a esta billetera.
   </div>
 
-  <div class="dato apagado" id="avisoPago">
-    Después de confirmarse el regalo, tu cuenta ingresará nuevamente al sistema y se habilitará un nuevo material para elegir.
-  </div>
+  <div class="dato texto-panel-secundario" id="avisoPago">
+  Después de confirmarse el regalo, tu cuenta ingresará nuevamente al sistema y se habilitará un nuevo material para elegir.
+  <br><br>
+  <span class="texto-panel-aviso">
+    ⚠️ Importante: si intentas validar un hash incorrecto <strong>5 veces</strong>, el sistema bloqueará temporalmente la validación durante <strong>30 minutos</strong> por seguridad.
+  </span>
+</div>
 
   <label for="txid">Hash de la transacción</label>
   <input id="txid" type="text" placeholder="0x..." />
@@ -578,40 +607,43 @@ video {
   </div>
 
   <div id="bloqueBarras">
-    <div class="dato apagado" style="margin-top: 14px; margin-bottom: 16px;">
-      Cuando se acumulen <strong>$30</strong>, en tus regalos disponibles,si sigues en modo automático,
-      el sistema toma de tu acumulado <strong>$15</strong> para dar nuevamente y <strong>$15 disponibles para retiro</strong>.
+  <div class="dato texto-panel-importante" style="margin-top: 14px; margin-bottom: 16px;">
+    Cuando se acumulen <strong>$30</strong> en tus regalos disponibles, si sigues en modo automático,
+    el sistema toma de tu acumulado <strong>$15</strong> para dar nuevamente y deja
+    <strong>$15 disponibles para retiro</strong>.
 
-      <br><br>
+    <br><br>
 
+    <span class="texto-panel-secundario">
       Si decides salir, dejarás de participar en el flujo y conservarás tu cuenta.
       Para volver a ingresar, ayuda a la comunidad nuevamente con <strong>$15</strong>.
-    </div>
-
-    <div class="progreso-item">
-      <strong>Barra 1: Cuando esta barra se complete, recibirás un regalo de $15</strong>
-      <div class="barra">
-        <div class="barra-interna" id="barraA"></div>
-      </div>
-      <span id="estadoA" class="estado-warn">⏳ Avanzando</span>
-    </div>
-
-    <div class="progreso-item">
-      <strong>Barra 2: Cuando esta barra se complete, recibirás otro regalo de $15</strong>
-      <div class="barra">
-        <div class="barra-interna" id="barraB"></div>
-      </div>
-      <span id="estadoB" class="estado-warn">⏳ Avanzando</span>
-    </div>
-
-    <div class="progreso-item">
-      <strong>Barra 3: Cuando completes ambas, acumularás en regalos disponibles $30</strong>
-      <div class="barra">
-        <div class="barra-interna" id="barraAB"></div>
-      </div>
-      <span id="estadoAB" class="estado-warn">⏳ Avanzando</span>
-    </div>
+    </span>
   </div>
+
+  <div class="progreso-item">
+    <strong>Barra 1: Cuando esta barra se complete, recibirás un regalo de $15</strong>
+    <div class="barra">
+      <div class="barra-interna" id="barraA"></div>
+    </div>
+    <span id="estadoA" class="estado-warn">⏳ Avanzando</span>
+  </div>
+
+  <div class="progreso-item">
+    <strong>Barra 2: Cuando esta barra se complete, recibirás otro regalo de $15</strong>
+    <div class="barra">
+      <div class="barra-interna" id="barraB"></div>
+    </div>
+    <span id="estadoB" class="estado-warn">⏳ Avanzando</span>
+  </div>
+
+  <div class="progreso-item">
+    <strong>Barra 3: Cuando completes ambas, acumularás en regalos disponibles $30</strong>
+    <div class="barra">
+      <div class="barra-interna" id="barraAB"></div>
+    </div>
+    <span id="estadoAB" class="estado-warn">⏳ Avanzando</span>
+  </div>
+</div>
 
   <!-- BLOQUE SALIR DEL FLUJO -->
 <div class="card oculto" id="bloqueDecision" style="margin-top:20px;">
