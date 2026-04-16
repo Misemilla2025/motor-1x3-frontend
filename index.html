@@ -400,6 +400,52 @@ video {
   opacity:.9;
 }
 
+.aviso-apoyo-panel{
+  margin-top:14px;
+  margin-bottom:14px;
+  color:#dbeafe;
+  font-weight:600;
+  line-height:1.6;
+  background:rgba(59,130,246,0.12);
+  border:1px solid rgba(147,197,253,0.35);
+  padding:12px 14px;
+  border-radius:10px;
+}
+
+.correo-apoyo-box{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  margin-top:10px;
+}
+
+.correo-apoyo-texto{
+  color:#93c5fd;
+  font-weight:700;
+  word-break:break-word;
+}
+
+.btn-copiar-apoyo{
+  background:#1d4ed8;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  padding:8px 12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn-copiar-apoyo:hover{
+  opacity:.92;
+}
+
+.estado-copia-correo{
+  margin-top:8px;
+  font-size:.95rem;
+  color:#bfdbfe;
+}
+
   </style>
 </head>
 <body>
@@ -691,11 +737,17 @@ video {
   </div>
 </div>
 
-<div class="dato aviso-soporte-panel" id="avisoSoporte">
-  📩 <strong>Soporte:</strong> si necesitas ayuda con tu cuenta, tu avance o tu retiro, escríbenos a
-  <a href="mailto:comunidad@misemilla.com?subject=Soporte%20Mi%20Semilla" class="link-soporte-panel">
-    comunidad@misemilla.com
-  </a>
+<div class="dato aviso-apoyo-panel" id="avisoApoyo">
+  🤝 <strong>Apoyo de la comunidad:</strong> si necesitas ayuda con tu cuenta, tu avance o tu retiro, contáctanos a este correo:
+
+  <div class="correo-apoyo-box">
+    <span id="correoApoyoTexto" class="correo-apoyo-texto">comunidad@misemilla.com</span>
+    <button type="button" class="btn-copiar-apoyo" onclick="copiarCorreoApoyo()">
+      Copiar correo
+    </button>
+  </div>
+
+  <div id="estadoCopiaCorreo" class="estado-copia-correo"></div>
 </div>
 
   <!-- BLOQUE RETIRO -->
@@ -1987,6 +2039,35 @@ function cargarVideosPublicos() {
   }
 }
 
+async function copiarCorreoApoyo() {
+  const correo = "comunidad@misemilla.com";
+  const estado = document.getElementById("estadoCopiaCorreo");
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(correo);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = correo;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "absolute";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+    }
+
+    estado.textContent = "✅ Correo copiado. Ahora pégalo en tu app de correo.";
+    setTimeout(() => {
+      estado.textContent = "";
+    }, 3000);
+  } catch (error) {
+    estado.textContent = "⚠️ No se pudo copiar automáticamente. Copia manualmente: " + correo;
+  }
+}
+
+window.copiarCorreoApoyo = copiarCorreoApoyo;
 cargarVideosPublicos();
 window.registrar = registrar;
 window.iniciarSesion = iniciarSesion;
