@@ -737,19 +737,6 @@ video {
   </div>
 </div>
 
-<div class="dato aviso-apoyo-panel" id="avisoApoyo">
-  🤝 <strong>Apoyo de la comunidad:</strong> si necesitas ayuda con tu cuenta, tu avance o tu retiro, contáctanos a este correo:
-
-  <div class="correo-apoyo-box">
-    <span id="correoApoyoTexto" class="correo-apoyo-texto">comunidad@misemilla.com</span>
-    <button type="button" class="btn-copiar-apoyo" onclick="copiarCorreoApoyo()">
-      Copiar correo
-    </button>
-  </div>
-
-  <div id="estadoCopiaCorreo" class="estado-copia-correo"></div>
-</div>
-
   <!-- BLOQUE RETIRO -->
   <div class="card oculto" id="bloqueRetiro" style="margin-top:20px;">
     <h3 class="titulo-seccion">Solicitud de retiro</h3>
@@ -805,13 +792,25 @@ video {
     </div>
   </div>
 
+<div class="dato aviso-apoyo-panel" id="avisoApoyo">
+  🤝 <strong>Apoyo de la comunidad:</strong> si necesitas ayuda con tu cuenta, tu avance o tu retiro, contáctanos a este correo:
+
+  <div class="correo-apoyo-box">
+    <span id="correoApoyoTexto" class="correo-apoyo-texto">comunidad@misemilla.com</span>
+    <button type="button" class="btn-copiar-apoyo" onclick="copiarCorreoApoyo()">
+      Copiar correo
+    </button>
+  </div>
+
+  <div id="estadoCopiaCorreo" class="estado-copia-correo"></div>
+</div>
+
   <!-- ACCIONES EXTRA -->
   <div class="fila-botones" style="margin-top:20px;">
     <button type="button" onclick="cerrarSesion()">Cerrar sesión</button>
     <button type="button" onclick="copiarEnlaceRegistro()">Link universal</button>
   </div>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
