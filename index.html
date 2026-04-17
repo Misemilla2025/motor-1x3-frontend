@@ -684,7 +684,21 @@ video {
   </div>
 </div>
 
-  <div id="bloqueBarras">
+  <!-- BLOQUE SALIR DEL FLUJO -->
+<div class="card oculto" id="bloqueDecision" style="margin-top:20px;">
+  <h3 class="titulo-seccion">Salida del flujo</h3>
+  <div class="dato" id="textoDecision">
+    Esta opción solo está disponible mientras estás en la fase A.
+  </div>
+
+  <div class="fila-botones" style="margin-top:15px;">
+    <button type="button" onclick="resolverDecision('detener_automatico')">
+      Salir del flujo ahora
+    </button>
+  </div>
+</div>
+
+<div id="bloqueBarras">
   <div class="dato texto-panel-importante" style="margin-top: 14px; margin-bottom: 16px;">
     Cuando se acumulen <strong>30 USDT</strong> en tus regalos disponibles, si sigues en modo automático,
     el sistema toma de tu acumulado <strong>15 USDT</strong> para dar nuevamente y deja
@@ -720,20 +734,6 @@ video {
       <div class="barra-interna" id="barraAB"></div>
     </div>
     <span id="estadoAB" class="estado-warn">⏳ Avanzando</span>
-  </div>
-</div>
-
-  <!-- BLOQUE SALIR DEL FLUJO -->
-<div class="card oculto" id="bloqueDecision" style="margin-top:20px;">
-  <h3 class="titulo-seccion">Salida del flujo</h3>
-  <div class="dato" id="textoDecision">
-    Esta opción solo está disponible mientras estás en la fase A.
-  </div>
-
-  <div class="fila-botones" style="margin-top:15px;">
-    <button type="button" onclick="resolverDecision('detener_automatico')">
-      Salir del flujo ahora
-    </button>
   </div>
 </div>
 
@@ -1880,6 +1880,14 @@ function limpiarFormularioOtpRetiro() {
 async function solicitarOtpRetiro() {
   if (otpRetiroEnProceso) return;
 
+  const formatoUsdt = (valor) => {
+    const n = Number(valor || 0);
+    return `${n.toLocaleString('es-CO', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    })} USDT`;
+  };
+
   const token = await obtenerTokenSesion();
   const wallet = obtenerValor('walletRetiro');
   const monto = Number(obtenerValor('montoRetiro') || 0);
@@ -1888,8 +1896,8 @@ async function solicitarOtpRetiro() {
   if (!token) { alert('Tu sesión no es válida. Inicia sesión nuevamente'); return; }
   if (!wallet || !/^0x[a-fA-F0-9]{40}$/.test(wallet)) { alert('La billetera no parece válida para red BEP20'); return; }
   if (!monto || Number.isNaN(monto)) { alert('Ingrese el monto a retirar'); return; }
-  if (monto < 15) { alert('El monto mínimo de retiro es $15'); return; }
-  if (monto > disponible) { alert(`El monto máximo permitido para este retiro es $${dinero(disponible)}`); return; }
+  if (monto < 15) { alert('El monto mínimo de retiro es 15 USDT'); return; }
+  if (monto > disponible) { alert(`El monto máximo permitido para este retiro es ${formatoUsdt(disponible)}`); return; }
 
   const btn = porId('btnSolicitarRetiro');
 
@@ -1927,8 +1935,8 @@ async function solicitarOtpRetiro() {
 
     if (btn) btn.textContent = 'Código enviado';
 
-    actualizarEstadoOtpRetiro(`Código enviado para retiro de $${dinero(data.monto)}. Ingresa el OTP recibido en tu correo.`);
-    alert(`Código OTP enviado correctamente para retirar $${dinero(data.monto)}.`);
+    actualizarEstadoOtpRetiro(`Código enviado para retiro de ${formatoUsdt(data.monto)}. Ingresa el OTP recibido en tu correo.`);
+    alert(`Código OTP enviado correctamente para retirar ${formatoUsdt(data.monto)}.`);
   } catch (error) {
     console.error('Error en solicitarOtpRetiro:', error);
     otpRetiroEnProceso = false;
