@@ -1956,8 +1956,15 @@ async function confirmarOtpRetiro() {
   const token = await obtenerTokenSesion();
   const codigo = obtenerValor('codigoOtpRetiro');
 
-  if (!token) { alert('Tu sesión no es válida. Inicia sesión nuevamente'); return; }
-  if (!/^\d{6}$/.test(codigo)) { alert('El código OTP debe tener 6 dígitos'); return; }
+  if (!token) {
+    alert('Tu sesión no es válida. Inicia sesión nuevamente');
+    return;
+  }
+
+  if (!/^\d{6}$/.test(codigo)) {
+    alert('El código OTP debe tener 6 dígitos');
+    return;
+  }
 
   const btn = porId('btnConfirmarRetiro');
 
@@ -1982,19 +1989,20 @@ async function confirmarOtpRetiro() {
 
     if (!res.ok) {
       confirmarRetiroEnProceso = false;
+
       if (btn) {
         btn.disabled = false;
         btn.textContent = 'Confirmar retiro';
       }
-      alert(data.error || 'No se pudo confirmar el retiro');
+
+      const mensaje = data?.detalle
+        ? `${data.error || 'No se pudo confirmar el retiro'}\n\nDetalle: ${data.detalle}`
+        : (data.error || 'No se pudo confirmar el retiro');
+
+      alert(mensaje);
       return;
     }
 
-    alert(data.message || 'Retiro confirmado correctamente');
-    limpiarFormularioOtpRetiro();
-    await cargarPanel();
-  } catch (error) {
-    console.error('Error en confirmarOtpRetiro:', error);
     confirmarRetiroEnProceso = false;
 
     if (btn) {
@@ -2002,7 +2010,20 @@ async function confirmarOtpRetiro() {
       btn.textContent = 'Confirmar retiro';
     }
 
-    alert('Error de conexión al confirmar retiro');
+    alert(data.message || 'Retiro confirmado correctamente');
+    limpiarFormularioOtpRetiro();
+    await cargarPanel();
+  } catch (error) {
+    console.error('Error en confirmarOtpRetiro:', error);
+
+    confirmarRetiroEnProceso = false;
+
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Confirmar retiro';
+    }
+
+    alert(`Error de conexión al confirmar retiro${error?.message ? `\n\nDetalle: ${error.message}` : ''}`);
   }
 }
 
