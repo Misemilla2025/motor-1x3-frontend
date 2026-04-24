@@ -446,9 +446,72 @@ video {
   color:#bfdbfe;
 }
 
+  .modal-aviso {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.72);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+  }
+
+  .modal-aviso.oculto {
+    display: none;
+  }
+
+  .modal-aviso-contenido {
+    background: #111827;
+    color: #fff;
+    border: 1px solid rgba(255,193,7,.6);
+    border-radius: 16px;
+    padding: 20px;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  }
+
+  .modal-aviso-contenido h3 {
+    color: #facc15;
+    margin-top: 0;
+  }
+
+  .modal-aviso-contenido p {
+    line-height: 1.5;
+  }
+
   </style>
 </head>
 <body>
+
+<div id="modalReestructuracion" class="modal-aviso oculto">
+  <div class="modal-aviso-contenido">
+    <h3>⚠️ INFORMACION IMPORTANTE PARA NUESTROS MIEMBROS</h3>
+
+    <p>
+      Se entrará en un proceso de reestructuración en el modelo de funcionamiento,
+      pensando en el mejor beneficio para la comunidad de mi semilla.
+    </p>
+
+    <p>
+      Aquellas personas que se registraron mediante el link <strong>https://panel.misemilla.com/</strong>
+      con un aporte de <strong>15 USDT</strong>, pueden obtener su reintegro,
+      ingresando al modulo de retiro, pues la comunidad estará fuera de la web mientras
+      se hace la reestructuración y es necesario que lo solicite lo antes posible.
+    </p>
+
+    <p>Gracias por su comprensión.</p>
+
+    <button type="button" onclick="cerrarAvisoEIrRetiro()">
+      Ir al módulo de retiro
+    </button>
+
+    <button type="button" onclick="cerrarAvisoReestructuracion()" style="margin-top:10px;">
+      Cerrar y permanecer en el panel
+    </button>
+  </div>
+</div>
 
 <div class="contenedor">
   <h1>Comunidad Mi Semilla</h1>
@@ -1442,6 +1505,8 @@ async function iniciarSesion() {
 
     await cargarPanel(false);
 
+    mostrarAvisoReestructuracion();
+
     mostrarRespuesta({
       message: "Bienvenido. Tu panel fue cargado correctamente."
     });
@@ -2094,6 +2159,41 @@ async function copiarCorreoApoyo() {
     }, 3000);
   } catch (error) {
     estado.textContent = "⚠️ No se pudo copiar automáticamente. Copia manualmente: " + correo;
+  }
+}
+
+function mostrarAvisoReestructuracion() {
+  const modal = document.getElementById('modalReestructuracion');
+  if (modal) modal.classList.remove('oculto');
+}
+
+function cerrarAvisoReestructuracion() {
+  const modal = document.getElementById('modalReestructuracion');
+  if (modal) modal.classList.add('oculto');
+}
+
+function cerrarAvisoEIrRetiro() {
+  cerrarAvisoReestructuracion();
+  irModuloRetiro();
+}
+
+function irModuloRetiro() {
+  const bloque = document.getElementById('bloqueRetiro');
+
+  if (!bloque) {
+    alert('El módulo de retiro no está disponible en este momento.');
+    return;
+  }
+
+  bloque.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
+
+  const monto = document.getElementById('montoRetiro');
+  if (monto) {
+    monto.value = 15;
+    setTimeout(() => monto.focus(), 500);
   }
 }
 
