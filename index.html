@@ -1963,8 +1963,7 @@ async function solicitarOtpRetiro() {
   if (!token) { alert('Tu sesión no es válida. Inicia sesión nuevamente'); return; }
   if (!wallet || !/^0x[a-fA-F0-9]{40}$/.test(wallet)) { alert('La billetera no parece válida para red BEP20'); return; }
   if (!monto || Number.isNaN(monto)) { alert('Ingrese el monto a retirar'); return; }
-  if (monto < 15) { alert('El monto mínimo de retiro es 15 USDT'); return; }
-  if (monto > disponible) { alert(`El monto máximo permitido para este retiro es ${formatoUsdt(disponible)}`); return; }
+  if (monto !== 15) { alert('Por ahora solo está habilitado el retiro de 15 USDT'); return; }
 
   const btn = porId('btnSolicitarRetiro');
 
@@ -1984,7 +1983,7 @@ async function solicitarOtpRetiro() {
       },
       body: JSON.stringify({
         wallet_destino: wallet,
-        monto_solicitado: Number(monto.toFixed(2))
+        monto_solicitado: 15
       })
     });
 
