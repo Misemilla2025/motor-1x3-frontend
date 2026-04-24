@@ -2185,16 +2185,23 @@ function irModuloRetiro() {
     return;
   }
 
-  bloque.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
+  bloque.classList.remove('oculto');
+  bloque.style.display = 'block';
 
   const monto = document.getElementById('montoRetiro');
   if (monto) {
     monto.value = 15;
-    setTimeout(() => monto.focus(), 500);
+    monto.readOnly = true;
   }
+
+  setTimeout(() => {
+    bloque.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+
+    if (monto) monto.focus();
+  }, 200);
 }
 
 window.copiarCorreoApoyo = copiarCorreoApoyo;
